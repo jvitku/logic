@@ -1,14 +1,4 @@
-Author Jaroslav Vitku [vitkujar@fel.cvut.cz]
-
-This is a part of Hybrid Artificial Neural Network Systems (HANNS) project (see: http://artificiallife.co.nf ). 
-
-This ROS metapackage (currently without direct catkin support) is a collection of ROS(java) nodes which implement some logical operations; from simple logic gates towards the more complex ones.
-
-Each node can be connected into a potentially heterogeneous network of nodes communicating via the ROS, potentially Nengoros ( nengoros.wordpress.com ). 
-
-
-
-HANNS project - Nodes for Reinforcement Learning
+HANNS project - Nodes for Logic Operations
 ================================================
 
 Author Jaroslav Vitku [vitkujar@fel.cvut.cz]
@@ -27,7 +17,7 @@ This is ROS meta-package (currently without direct catkin support), a collection
 Purpose of this repository
 -----------------------
 
-This repository holds ROS nodes with implementation of some logical operations; from simple logic gates towards the more complex ones in the future.
+This repository holds ROS nodes with implementation of some *logical operations*; from simple logic gates towards the more complex ones in the future.
 
 
 Technical notes
