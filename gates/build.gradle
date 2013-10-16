@@ -10,7 +10,7 @@ apply plugin: 'java'
 
 // task to create gradle wrapper (used only once) [gradle wrapper]
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.7'
+	gradleVersion      = '1.7'
 }
 
 // Create the Java (jar) library from this project. [./gradlew install]
@@ -21,23 +21,30 @@ apply plugin: 'eclipse'
 
 // Create the runnable application from this project into build/lib/bin.. ? [./gradlew installApp]
 apply plugin: 'application'
-mainClassName = 'org.ros.RosRun'
-//mainClassName = 'org.ros.tests.MyShare'
+mainClassName       = 'org.ros.RosRun'
+//mainClassName     = 'org.ros.tests.MyShare'
 
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
 
-// This configures the project to search for Maven libraries (rosjava: bootstrap, messages, core)
+// This configures the project to search for Maven libraries (rosjava: bootstrap.. and their dependencies)
 repositories {
-  mavenLocal()
+	mavenCentral()
+	mavenLocal()
+
+	maven {
+		url 'http://robotbrains.hideho.org/nexus/content/groups/ros-public'
+		//		url 'http://repo1.maven.org/maven2/'
+	}
 }
 
 // Define the version and name of my stack (ROS convention)
-version = '0.0.0-SNAPSHOT'
-group = 'ctu.hanns.logic'
+version             = '0.0.0-SNAPSHOT'
+group               = 'ctu.hanns.logic'
 
 // This project depends on compilation of rosjava_core
 dependencies {
-  compile 'ros.rosjava_core:rosjava:0.0.0-SNAPSHOT'
+	compile 'ros.rosjava_core:rosjava:0.0.0-SNAPSHOT'
+	testCompile 'junit:junit:4.10'
 }
 
