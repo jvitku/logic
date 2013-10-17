@@ -9,9 +9,11 @@
 apply plugin: 'java'
 
 // task to create gradle wrapper (used only once) [gradle wrapper]
+/*
+thi sis handled in the super-project nengoros
 task wrapper(type: Wrapper) {
 	gradleVersion      = '1.7'
-}
+}*/
 
 // Create the Java (jar) library from this project. [./gradlew install]
 apply plugin: 'maven'
@@ -39,7 +41,7 @@ repositories {
 }
 
 // Define the version and name of my stack (ROS convention)
-version             = '0.0.0-SNAPSHOT'
+version             = '0.0.1-SNAPSHOT'
 group               = 'ctu.hanns.logic'
 
 // This project depends on compilation of rosjava_core

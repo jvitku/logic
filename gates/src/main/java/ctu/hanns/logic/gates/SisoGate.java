@@ -25,8 +25,8 @@ public abstract class SisoGate extends AbstractNodeMain {
 	Publisher<std_msgs.Bool> publisher;
 	Log log;
 	
-	public final String aT = "logic:gates:ina";
-	public final String yT = "logic:gates:outa";
+	public final String aT = "logic/gates/ina";
+	public final String yT = "logic/gates/outa";
 
 	private boolean a = false, y=false;
 	private volatile boolean inited = false;
