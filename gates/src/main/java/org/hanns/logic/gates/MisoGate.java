@@ -1,4 +1,4 @@
-package ctu.hanns.logic.gates;
+package org.hanns.logic.gates;
 
 import org.apache.commons.logging.Log;
 import org.ros.concurrent.CancellableLoop;
@@ -14,7 +14,7 @@ import std_msgs.Bool;
  * @author Jaroslav Vitku vitkujar@fel.cvut.cz
  * 
  */
-public abstract class SisoGate extends AbstractNodeMain {
+public abstract class MisoGate extends AbstractNodeMain {
 
 	// node setup
 	private final boolean SEND = false;
@@ -26,17 +26,19 @@ public abstract class SisoGate extends AbstractNodeMain {
 	Log log;
 	
 	public final String aT = "logic/gates/ina";
+	public final String bT = "logic/gates/inb";
 	public final String yT = "logic/gates/outa";
 
-	private boolean a = false, y=false;
+	private boolean a = false,b = false, y=false;
 	private volatile boolean inited = false;
 	
 	/**
 	 * implement this in order to make computation 
 	 * @param a input value A
+	 * @param b input value B
 	 * @return output value Y
 	 */
-	protected abstract boolean copute(boolean a);
+	protected abstract boolean copute(boolean a, boolean b);
 
 	private void send(){
 		if(!inited)
@@ -54,12 +56,21 @@ public abstract class SisoGate extends AbstractNodeMain {
 		
 		// register subscribers
 		subscriberA = connectedNode.newSubscriber(aT, std_msgs.Bool._TYPE);
+		subscriberB = connectedNode.newSubscriber(bT, std_msgs.Bool._TYPE);
 
 		subscriberA.addMessageListener(new MessageListener<std_msgs.Bool>() {
 			@Override
 			public void onNewMessage(Bool message) {
 				a = message.getData();
-				y = copute(a);
+				y = copute(a,b);
+				send();
+			}
+		});
+		subscriberB.addMessageListener(new MessageListener<std_msgs.Bool>() {
+			@Override
+			public void onNewMessage(Bool message) {
+				b = message.getData();
+				y = copute(a,b);
 				send();
 			}
 		});
