@@ -17,7 +17,7 @@ from ctu.nengoros.comm.rosutils import RosUtils as RosUtils
 # node utils..
 title='LogicAND'
 label='LogicAND'
-icon='and.png'
+icon='logic_gates_and.png'
 
 # parameters for initializing the node
 params=[
@@ -41,9 +41,9 @@ independent=True, useQuick=True):
 
     # create group with a name
     g = NodeGroup(name, independent);    	# create independent group called..
-    g.addNode(finder, "LogicAND", "java");      # start java node and name it finder
+    g.addNode(finder, "logic_gates_AND", "java");      # start java node and name it finder
 
-    neuron = NeuralModule('AND_'+name, g) # construct the neural module 
+    neuron = NeuralModule(name+"_logic_gates_AND", g) # construct the neural module 
     neuron.createEncoder("logic/gates/ina", "bool",1)   # termination = input of neuron (4xfloat)
     neuron.createEncoder("logic/gates/inb", "bool",1)   # termination = input of neuron (4xfloat)
     neuron.createDecoder("logic/gates/outa", "bool",1)  # origin = output of neuron (min and max)

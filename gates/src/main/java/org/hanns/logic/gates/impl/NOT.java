@@ -9,6 +9,6 @@ public class NOT extends SisoGate{
 	public boolean copute(boolean a) { return !a; }
 	
 	@Override
-	public GraphName getDefaultNodeName() { return GraphName.of("OR"); }
+	public GraphName getDefaultNodeName() { return GraphName.of("NOT"); }
 
 }

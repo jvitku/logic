@@ -12,7 +12,7 @@ apply plugin: 'java'
 /*
 thi sis handled in the super-project nengoros
 task wrapper(type: Wrapper) {
-	gradleVersion      = '1.7'
+gradleVersion      = '1.7'
 }*/
 
 // Create the Java (jar) library from this project. [./gradlew install]
@@ -48,5 +48,6 @@ group               = 'org.hanns.logic'
 dependencies {
 	compile 'ros.rosjava_core:rosjava:0.0.0-SNAPSHOT'
 	testCompile 'junit:junit:4.10'
+	testCompile 'ctu.nengoros:jroscore:0.0.1-SNAPSHOT'
 }
 

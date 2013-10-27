@@ -16,9 +16,9 @@ import std_msgs.Bool;
  */
 public abstract class MisoGate extends AbstractNodeMain {
 
-	// node setup
-	private final boolean SEND = false;
-	private final int sleepTime = 1000;
+
+	private final boolean SEND = false; 		// send periodically each "time step"?
+	private final int sleepTime = 10000;		// everything handled by listeners
 
 	// ROS stuff
 	Subscriber<std_msgs.Bool> subscriberA, subscriberB;
@@ -47,8 +47,10 @@ public abstract class MisoGate extends AbstractNodeMain {
 		std_msgs.Bool out = publisher.newMessage();
 		out.setData(y);
 		publisher.publish(out);
-		log.info("RECEIVED!! Publishing this: \"" + out.getData() + " !! on topic: "+yT);
+		log.info("Received data, publishing this: \"" + out.getData() + " !! on topic: "+yT);
 	}
+	
+	public int getSleepTime(){ return this.sleepTime; }
 	
 	@Override
 	public void onStart(final ConnectedNode connectedNode) {
