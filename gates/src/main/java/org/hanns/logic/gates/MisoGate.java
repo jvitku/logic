@@ -18,20 +18,20 @@ public abstract class MisoGate extends AbstractNodeMain {
 
 
 	private final boolean SEND = false; 		// send periodically each "time step"?
-	private final int sleepTime = 10000;		// everything handled by listeners
+	private final int sleepTime = 100;		// everything handled by listeners
 
 	// ROS stuff
 	Subscriber<std_msgs.Bool> subscriberA, subscriberB;
 	Publisher<std_msgs.Bool> publisher;
 	Log log;
-	
+
 	public final String aT = "logic/gates/ina";
 	public final String bT = "logic/gates/inb";
 	public final String yT = "logic/gates/outa";
 
 	private boolean a = false,b = false, y=false;
 	private volatile boolean inited = false;
-	
+
 	/**
 	 * implement this in order to make computation 
 	 * @param a input value A
@@ -43,19 +43,19 @@ public abstract class MisoGate extends AbstractNodeMain {
 	private void send(){
 		if(!inited)
 			return;
-		
+
 		std_msgs.Bool out = publisher.newMessage();
 		out.setData(y);
 		publisher.publish(out);
 		log.info("Received data, publishing this: \"" + out.getData() + " !! on topic: "+yT);
 	}
-	
+
 	public int getSleepTime(){ return this.sleepTime; }
-	
+
 	@Override
 	public void onStart(final ConnectedNode connectedNode) {
 		log = connectedNode.getLog();
-		
+
 		// register subscribers
 		subscriberA = connectedNode.newSubscriber(aT, std_msgs.Bool._TYPE);
 		subscriberB = connectedNode.newSubscriber(bT, std_msgs.Bool._TYPE);
@@ -66,6 +66,7 @@ public abstract class MisoGate extends AbstractNodeMain {
 				a = message.getData();
 				y = copute(a,b);
 				send();
+				//System.out.println("received data on AAAA; responding to: ("+a+","+b+")="+y);
 			}
 		});
 		subscriberB.addMessageListener(new MessageListener<std_msgs.Bool>() {
@@ -74,6 +75,7 @@ public abstract class MisoGate extends AbstractNodeMain {
 				b = message.getData();
 				y = copute(a,b);
 				send();
+				//System.out.println("received data on BBBB; responding to: ("+a+","+b+")="+y);			
 			}
 		});
 
@@ -81,7 +83,7 @@ public abstract class MisoGate extends AbstractNodeMain {
 		publisher = connectedNode.newPublisher(yT, std_msgs.Bool._TYPE);		
 		inited = true;
 
-		
+
 		// infinite loop
 		connectedNode.executeCancellableLoop(new CancellableLoop() {
 			@Override
@@ -97,7 +99,8 @@ public abstract class MisoGate extends AbstractNodeMain {
 					publisher.publish(out);
 					log.info("Publishing this: \"" + out.getData() + " !! on topic: "+yT);
 				}
-				Thread.sleep(sleepTime);
+				//System.out.println("Hi I am Miso gate and I am here");
+				//Thread.sleep(sleepTime);
 			}
 		});
 	}

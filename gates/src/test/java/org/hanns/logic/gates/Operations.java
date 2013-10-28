@@ -23,10 +23,10 @@ public class Operations{
 		assertFalse(a.copute(false, false));
 		
 		// a bit redundant..
-		assertEquals(a.copute(true, true), 	Log.and(true, true));
-		assertEquals(a.copute(true, false), Log.and(true, false));
-		assertEquals(a.copute(false, true), Log.and(false, true));
-		assertEquals(a.copute(false, false),Log.and(false, false));
+		assertEquals(a.copute(true, true), 	Logic.and(true, true));
+		assertEquals(a.copute(true, false), Logic.and(true, false));
+		assertEquals(a.copute(false, true), Logic.and(false, true));
+		assertEquals(a.copute(false, false),Logic.and(false, false));
 	}
 	
 	@Test
@@ -37,10 +37,10 @@ public class Operations{
 		assertTrue(a.copute(false, true));
 		assertFalse(a.copute(false, false));
 		
-		assertEquals(a.copute(true, true), 	Log.or(true, true));
-		assertEquals(a.copute(true, false), Log.or(true, false));
-		assertEquals(a.copute(false, true), Log.or(false, true));
-		assertEquals(a.copute(false, false),Log.or(false, false));
+		assertEquals(a.copute(true, true), 	Logic.or(true, true));
+		assertEquals(a.copute(true, false), Logic.or(true, false));
+		assertEquals(a.copute(false, true), Logic.or(false, true));
+		assertEquals(a.copute(false, false),Logic.or(false, false));
 	}
 
 	@Test
@@ -51,10 +51,10 @@ public class Operations{
 		assertTrue(a.copute(false, true));
 		assertFalse(a.copute(false, false));
 		
-		assertEquals(a.copute(true, true), 	Log.xor(true, true));
-		assertEquals(a.copute(true, false), Log.xor(true, false));
-		assertEquals(a.copute(false, true), Log.xor(false, true));
-		assertEquals(a.copute(false, false),Log.xor(false, false));
+		assertEquals(a.copute(true, true), 	Logic.xor(true, true));
+		assertEquals(a.copute(true, false), Logic.xor(true, false));
+		assertEquals(a.copute(false, true), Logic.xor(false, true));
+		assertEquals(a.copute(false, false),Logic.xor(false, false));
 	}
 
 	@Test
@@ -65,10 +65,10 @@ public class Operations{
 		assertTrue(a.copute(false, true));
 		assertTrue(a.copute(false, false));
 		
-		assertEquals(a.copute(true, true), 	Log.nand(true, true));
-		assertEquals(a.copute(true, false), Log.nand(true, false));
-		assertEquals(a.copute(false, true), Log.nand(false, true));
-		assertEquals(a.copute(false, false),Log.nand(false, false));
+		assertEquals(a.copute(true, true), 	Logic.nand(true, true));
+		assertEquals(a.copute(true, false), Logic.nand(true, false));
+		assertEquals(a.copute(false, true), Logic.nand(false, true));
+		assertEquals(a.copute(false, false),Logic.nand(false, false));
 	}
 	
 	@Test
@@ -77,7 +77,7 @@ public class Operations{
 		assertFalse(a.copute(true));
 		assertTrue(a.copute(false));
 		
-		assertEquals(a.copute(true), Log.not(true));
-		assertEquals(a.copute(false), Log.not(false));
+		assertEquals(a.copute(true), Logic.not(true));
+		assertEquals(a.copute(false), Logic.not(false));
 	}
 }
