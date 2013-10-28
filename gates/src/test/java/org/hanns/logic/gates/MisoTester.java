@@ -160,7 +160,6 @@ public class MisoTester extends AbstractNodeMain {
 				lastReceived = b;
 				waiting = false;
 			}
-
 		});
 
 		// wait for  publishers to be registered by the master
