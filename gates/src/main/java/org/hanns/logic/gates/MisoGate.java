@@ -100,7 +100,7 @@ public abstract class MisoGate extends AbstractNodeMain {
 					log.info("Publishing this: \"" + out.getData() + " !! on topic: "+yT);
 				}
 				//System.out.println("Hi I am Miso gate and I am here");
-				//Thread.sleep(sleepTime);
+				Thread.sleep(sleepTime);
 			}
 		});
 	}

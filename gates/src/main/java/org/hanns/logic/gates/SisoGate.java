@@ -61,6 +61,7 @@ public abstract class SisoGate extends AbstractNodeMain {
 			public void onNewMessage(Bool message) {
 				a = message.getData();
 				y = copute(a);
+				System.out.println("EEEEEEEEEEEEEEEE got this:"+a+" and responding this: "+y);
 				send();
 			}
 		});
