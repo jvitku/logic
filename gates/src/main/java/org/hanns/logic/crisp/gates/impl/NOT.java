@@ -1,6 +1,6 @@
-package org.hanns.logic.gates.impl;
+package org.hanns.logic.crisp.gates.impl;
 
-import org.hanns.logic.gates.SisoGate;
+import org.hanns.logic.crisp.gates.SisoGate;
 import org.ros.namespace.GraphName;
 
 public class NOT extends SisoGate{

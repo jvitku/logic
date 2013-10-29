@@ -1,6 +1,6 @@
-package org.hanns.logic.gates.impl;
+package org.hanns.logic.crisp.gates.impl;
 
-import org.hanns.logic.gates.MisoGate;
+import org.hanns.logic.crisp.gates.MisoGate;
 import org.ros.namespace.GraphName;
 
 public class AND extends MisoGate{
@@ -10,5 +10,5 @@ public class AND extends MisoGate{
 
 	@Override
 	public GraphName getDefaultNodeName() { return GraphName.of("AND"); }
-	
+
 }

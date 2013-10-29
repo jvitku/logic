@@ -1,4 +1,4 @@
-package org.hanns.logic.gates;
+package org.hanns.logic.crisp.gates;
 
 import static org.junit.Assert.*;
 

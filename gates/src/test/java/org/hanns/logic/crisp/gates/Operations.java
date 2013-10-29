@@ -1,11 +1,12 @@
-package org.hanns.logic.gates;
+package org.hanns.logic.crisp.gates;
 
 import static org.junit.Assert.*;
-import org.hanns.logic.gates.impl.AND;
-import org.hanns.logic.gates.impl.NAND;
-import org.hanns.logic.gates.impl.NOT;
-import org.hanns.logic.gates.impl.OR;
-import org.hanns.logic.gates.impl.XOR;
+
+import org.hanns.logic.crisp.gates.impl.AND;
+import org.hanns.logic.crisp.gates.impl.NAND;
+import org.hanns.logic.crisp.gates.impl.NOT;
+import org.hanns.logic.crisp.gates.impl.OR;
+import org.hanns.logic.crisp.gates.impl.XOR;
 import org.junit.Test;
 
 /**

@@ -1,4 +1,4 @@
-package org.hanns.logic.gates;
+package org.hanns.logic.crisp.gates;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -17,30 +17,30 @@ public class Communication extends RosCommunicationTest{
 
 	@Test
 	public void and(){
-		misoGateTest("org.hanns.logic.gates.impl.AND", 0);
+		misoGateTest("org.hanns.logic.crisp.gates.impl.AND", 0);
 	}
 
 	@Test
 	public void nand(){
-		misoGateTest("org.hanns.logic.gates.impl.NAND", 1);
+		misoGateTest("org.hanns.logic.crisp.gates.impl.NAND", 1);
 	}
 
 	@Test
 	public void or(){
-		misoGateTest("org.hanns.logic.gates.impl.OR", 2);
+		misoGateTest("org.hanns.logic.crisp.gates.impl.OR", 2);
 	}
 
 	@Test
 	public void xor(){
-		misoGateTest("org.hanns.logic.gates.impl.XOR", 3);
+		misoGateTest("org.hanns.logic.crisp.gates.impl.XOR", 3);
 	}
 
 	@Test
 	public void not(){
 		// run the node for testing
-		RosRunner gate = runNode("org.hanns.logic.gates.impl.NOT");
+		RosRunner gate = runNode("org.hanns.logic.crisp.gates.impl.NOT");
 
-		RosRunner rr = runNode("org.hanns.logic.gates.SisoGateTester");
+		RosRunner rr = runNode("org.hanns.logic.crisp.gates.SisoGateTester");
 
 		NodeMain node = rr.getNode();
 		SisoGateTester st = null;
@@ -84,7 +84,7 @@ public class Communication extends RosCommunicationTest{
 		// run the node for testing
 		RosRunner gate = runNode(gateClassName);
 
-		RosRunner rr = runNode("org.hanns.logic.gates.MisoGateTester");
+		RosRunner rr = runNode("org.hanns.logic.crisp.gates.MisoGateTester");
 		MisoGateTester mt = startMisoGateTester(rr);
 
 		ArrayList<Boolean[]> sentData = new ArrayList<Boolean[]>(); 
