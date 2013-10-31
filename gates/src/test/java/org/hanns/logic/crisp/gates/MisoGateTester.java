@@ -6,14 +6,14 @@ import org.ros.namespace.GraphName;
 import org.ros.node.ConnectedNode;
 
 import static org.junit.Assert.fail;
-import ctu.nengoros.testsuit.topicParticipant.ConnectedParticipantPublisher;
+import ctu.nengoros.nodes.topicParticipant.ConnectedParticipantPublisher;
+import ctu.nengoros.nodes.topicParticipant.ParticipantPublisher;
 
 public class MisoGateTester extends GateTester{
 
 	// initial conditions for gates is this on inputs:
 	private boolean[] lastSent = new boolean[]{false, false};
 
-	
 	private Random r = new Random();
 
 	@Override
@@ -24,14 +24,22 @@ public class MisoGateTester extends GateTester{
 
 		log = connectedNode.getLog();
 
+		System.out.println("00000000000000000000000 on staaaart!!!!");
+
 		super.connectGateOutput(connectedNode);
+
+		System.out.println("00000000000000000000000 outpuuuut!!!!");
 
 		this.connectGateInputs(connectedNode);
 
+		System.out.println("00000000000000000000000 connecteed!!!!");
+
+		super.nodeIsPrepared();
+		System.out.println("00000000000000000000000 prepareeed!!!!");
+
 		// wait for preconditions: registered to master and some subscriber connected 
-		super.waitForCommunicationReady();
-		
-		super.ready = true;
+		super.awaitCommunicationReady();
+		System.out.println("00000000000000000000000 communication readyyy!!!!");
 	}
 
 	/**
@@ -43,10 +51,13 @@ public class MisoGateTester extends GateTester{
 	 */
 	public boolean computeRemotely(boolean a, boolean b){
 
-		super.waitForReady();
-		
+		System.out.println("00000000000000000000000 waiting foooor communication readyyy!!!!");
+		super.awaitCommunicationReady();
+
+		System.out.println("00000000000000000000000 communication readyyy computeremotelyyyy!!!!");
+
 		this.checkForCorrectChanges(a, b);
-		
+
 		if(a != lastSent[0]){			// a changed?
 			this.sendA(a);
 		}else if(b != lastSent[1]){		// b changed?
@@ -58,7 +69,7 @@ public class MisoGateTester extends GateTester{
 				this.sendB(lastSent[1]);
 			}
 		}
-		
+
 		super.awaitResponse();
 		return super.response;
 	}
@@ -99,9 +110,16 @@ public class MisoGateTester extends GateTester{
 		publisherA = connectedNode.newPublisher(aT, std_msgs.Bool._TYPE);
 		publisherB = connectedNode.newPublisher(bT, std_msgs.Bool._TYPE);
 
-		super.participants.registerParticipant(
-				new ConnectedParticipantPublisher<std_msgs.Bool>(publisherA));
-		super.participants.registerParticipant(
-				new ConnectedParticipantPublisher<std_msgs.Bool>(publisherB));
+		if(super.requireGateRunning){
+			super.participants.registerParticipant(
+					new ConnectedParticipantPublisher<std_msgs.Bool>(publisherA));
+			super.participants.registerParticipant(
+					new ConnectedParticipantPublisher<std_msgs.Bool>(publisherB));
+		}else{
+			super.participants.registerParticipant(
+					new ParticipantPublisher<std_msgs.Bool>(publisherA));
+			super.participants.registerParticipant(
+					new ParticipantPublisher<std_msgs.Bool>(publisherB));
+		}
 	}
 }

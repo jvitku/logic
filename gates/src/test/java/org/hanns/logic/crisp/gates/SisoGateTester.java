@@ -3,7 +3,7 @@ package org.hanns.logic.crisp.gates;
 import org.ros.namespace.GraphName;
 import org.ros.node.ConnectedNode;
 
-import ctu.nengoros.testsuit.topicParticipant.ConnectedParticipantPublisher;
+import ctu.nengoros.nodes.topicParticipant.ConnectedParticipantPublisher;
 
 
 public class SisoGateTester extends GateTester{
@@ -20,10 +20,10 @@ public class SisoGateTester extends GateTester{
 
 		this.connectGateInput(connectedNode);
 
+		super.nodeIsPrepared();
+		
 		// wait for preconditions: registered to master and some subscriber connected 
-		super.waitForCommunicationReady();
-
-		super.ready = true;
+		super.awaitCommunicationReady();
 	}
 
 	/**
@@ -34,7 +34,7 @@ public class SisoGateTester extends GateTester{
 	 */
 	public boolean computeRemotely(boolean a){
 
-		super.waitForReady();
+		super.awaitCommunicationReady();
 		
 		this.sendA(a);
 

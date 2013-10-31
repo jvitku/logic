@@ -6,7 +6,7 @@ import org.ros.namespace.GraphName;
 public class NAND extends MisoGate{
 
 	@Override
-	public boolean copute(boolean a, boolean b) { return !(a && b); }
+	public boolean compute(boolean a, boolean b) { return !(a && b); }
 	
 	@Override
 	public GraphName getDefaultNodeName() { return GraphName.of("NAND"); }

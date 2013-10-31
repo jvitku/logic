@@ -1,4 +1,4 @@
-package org.hanns.logic.crisp.gates;
+package org.hanns.logic.fuzzy.gates;
 
 import org.hanns.logic.gates.MisoAbstractGate;
 import org.ros.concurrent.CancellableLoop;
@@ -11,22 +11,23 @@ import std_msgs.Bool;
  * @author Jaroslav Vitku vitkujar@fel.cvut.cz
  * 
  */
-public abstract class MisoGate extends MisoAbstractGate<std_msgs.Bool> {
+public abstract class MisoGate extends MisoAbstractGate<std_msgs.Float32> {
 
 
-	private boolean a = false,b = false, y=false;
+	private float a = 0,b = 0, y=0;
+	
+	//private volatile boolean inited = false;
 
 	protected void send(){
-		super.awaitCommunicationReady();
+		if(!inited)
+			return;
 
-		std_msgs.Bool out = publisher.newMessage();
+		std_msgs.Float32 out = publisher.newMessage();
 		out.setData(y);
 		publisher.publish(out);
 		log.info("Received data, publishing this: \"" + out.getData() + " !! on topic: "+yT);
 	}
 
-	public abstract boolean compute(boolean a, boolean b);
-	
 	public int getSleepTime(){ return this.sleepTime; }
 
 	@Override
@@ -34,23 +35,23 @@ public abstract class MisoGate extends MisoAbstractGate<std_msgs.Bool> {
 		log = connectedNode.getLog();
 
 		// register subscribers
-		subscriberA = connectedNode.newSubscriber(aT, std_msgs.Bool._TYPE);
-		subscriberB = connectedNode.newSubscriber(bT, std_msgs.Bool._TYPE);
+		subscriberA = connectedNode.newSubscriber(aT, std_msgs.Float32._TYPE);
+		subscriberB = connectedNode.newSubscriber(bT, std_msgs.Float32._TYPE);
 
-		subscriberA.addMessageListener(new MessageListener<std_msgs.Bool>() {
+		subscriberA.addMessageListener(new MessageListener<std_msgs.Float32>() {
 			@Override
-			public void onNewMessage(Bool message) {
+			public void onNewMessage(std_msgs.Float32 message) {
 				a = message.getData();
-				y = compute(a,b);
+			//	y = compute(a,b);
 				send();
 				//System.out.println("received data on AAAA; responding to: ("+a+","+b+")="+y);
 			}
 		});
-		subscriberB.addMessageListener(new MessageListener<std_msgs.Bool>() {
+		subscriberB.addMessageListener(new MessageListener<std_msgs.Float32>() {
 			@Override
-			public void onNewMessage(Bool message) {
+			public void onNewMessage(std_msgs.Float32 message) {
 				b = message.getData();
-				y = compute(a,b);
+//				y = compute(a,b);
 				send();
 				//System.out.println("received data on BBBB; responding to: ("+a+","+b+")="+y);			
 			}
@@ -58,7 +59,8 @@ public abstract class MisoGate extends MisoAbstractGate<std_msgs.Bool> {
 
 		// register publisher
 		publisher = connectedNode.newPublisher(yT, std_msgs.Bool._TYPE);		
-		super.nodeIsPrepared();
+		inited = true;
+
 
 		// infinite loop
 		connectedNode.executeCancellableLoop(new CancellableLoop() {
@@ -70,10 +72,10 @@ public abstract class MisoGate extends MisoAbstractGate<std_msgs.Bool> {
 			protected void loop() throws InterruptedException {
 
 				if(SEND){
-					std_msgs.Bool out = publisher.newMessage();
-					out.setData(y);
-					publisher.publish(out);
-					log.info("Publishing this: \"" + out.getData() + " !! on topic: "+yT);
+				//	std_msgs.Bool out = publisher.newMessage();
+		//			out.setData(y);
+			//		publisher.publish(out);
+					//log.info("Publishing this: \"" + out.getData() + " !! on topic: "+yT);
 				}
 				//System.out.println("Hi I am Miso gate and I am here");
 				Thread.sleep(sleepTime);

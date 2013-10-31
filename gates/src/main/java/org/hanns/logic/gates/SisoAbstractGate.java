@@ -16,6 +16,6 @@ public abstract class SisoAbstractGate<T> extends Gate<T> {
 	 * @param a input value A
 	 * @return output value Y
 	 */
-	public abstract boolean copute(boolean a);
+	//public abstract boolean compute(T a);
 
 }

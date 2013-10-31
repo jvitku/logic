@@ -15,5 +15,5 @@ public abstract class MisoAbstractGate<T> extends Gate<T> {
 	public final String bT = "logic/gates/inb";
 	public final String aT = "logic/gates/ina";
 	
-	public abstract boolean copute(boolean a, boolean b);
+	//public abstract boolean compute(T a, T b);
 }

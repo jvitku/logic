@@ -8,10 +8,12 @@ import org.ros.node.ConnectedNode;
 import org.ros.node.topic.Publisher;
 import org.ros.node.topic.Subscriber;
 
-import ctu.nengoros.testsuit.CommunicationTesterNode;
-import ctu.nengoros.testsuit.topicParticipant.ConnectedParticipantSubscriber;
+import ctu.nengoros.nodes.CommunicationAwareNode;
+import ctu.nengoros.nodes.topicParticipant.ConnectedParticipantSubscriber;
+import ctu.nengoros.nodes.topicParticipant.ParticipantSubscriber;
 
-public abstract class GateTester extends CommunicationTesterNode{
+
+public abstract class GateTester extends CommunicationAwareNode{
 	
 	Log log;
 
@@ -28,33 +30,12 @@ public abstract class GateTester extends CommunicationTesterNode{
 	
 	protected final int maxwait = 5000, waittime = 10;	//ms
 	
-	protected volatile boolean ready = false;
+	// check if my communication is connected somewhere?
+	public boolean requireGateRunning = true;
 	
 			
 	public boolean somethingReceived(){ return receivedMessages > 0; }
 
-
-	/**
-	 * Wait for the node to be ready (onStart method says that is ready). 
-	 */
-	public void waitForReady(){
-		if(ready)
-			return;
-		int poc = 0;
-		while(!ready ){
-			if(waittime*poc++ > maxwait){
-				System.out.println("Node is not ready too long, giving up in given time of "+maxwait+" ms");
-				fail("Node is not ready too long, giving up in given time of "+maxwait+" ms");
-				return;
-			}
-			try {
-				Thread.sleep(waittime);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-				fail("Could not sleep");
-			}
-		}
-	}
 	
 	protected void awaitResponse(){
 		int poc = 0;
@@ -96,7 +77,11 @@ public abstract class GateTester extends CommunicationTesterNode{
 		});
 
 		// this thing ensures that at least one subscriber is registered
-		super.participants.registerParticipant(
+		if(this.requireGateRunning)
+			super.participants.registerParticipant(
 				new ConnectedParticipantSubscriber<std_msgs.Bool>(subscriber));
+		else
+			super.participants.registerParticipant(
+					new ParticipantSubscriber<std_msgs.Bool>(subscriber));
 	}
 }
