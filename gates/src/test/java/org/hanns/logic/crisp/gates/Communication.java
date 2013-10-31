@@ -1,8 +1,6 @@
 package org.hanns.logic.crisp.gates;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -21,40 +19,36 @@ public class Communication extends ctu.nengoros.nodes.RosCommunicationTest{
 		//NodeMain node = rr.getNode();
 		assertTrue(rr.isRunning());
 		
-		sleep(500);
+		sleep(100);
 		
 		assertTrue(rr.isRunning());
 		rr.stop();
 		assertFalse(rr.isRunning());
 	}
-	/*
+	/**/
 
 	@Test 
 	public void launchMisoGateTester(){
 		RosRunner rr = runNode("org.hanns.logic.crisp.gates.MisoGateTester");
 		
 		MisoGateTester mgt = startMisoGateTester(rr);
-		mgt.requireGateRunning = false; // we do not have any gate runnign here..
+		mgt.requireGateRunning = false; // we do not have any gate running here..
 		
 		assertTrue(rr.isRunning());
 		
 		mgt.awaitCommunicationReady();
-		System.out.println("COoooooommmuuuniii...... ready");
-		
-		//mgt.computeRemotely(true, true);
-		sleep(500);
 		
 		assertTrue(rr.isRunning());
 		rr.stop();
 		assertFalse(rr.isRunning());
-	}*/
+	}/**/
 	
 
 	@Test
 	public void and(){
 		misoGateTest("org.hanns.logic.crisp.gates.impl.AND", 0);
 	}
-/*
+
 	@Test
 	public void nand(){
 		misoGateTest("org.hanns.logic.crisp.gates.impl.NAND", 1);
@@ -113,7 +107,7 @@ public class Communication extends ctu.nengoros.nodes.RosCommunicationTest{
 		rr.stop();
 		gate.stop();
 	}
-*/
+/**/
 	private void misoGateTest(String gateClassName, int operationNo){
 		// run the node for testing
 		RosRunner gate = runNode(gateClassName);

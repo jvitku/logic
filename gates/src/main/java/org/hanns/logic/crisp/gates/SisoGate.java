@@ -60,7 +60,6 @@ public abstract class SisoGate extends CommunicationAwareNode {
 			public void onNewMessage(Bool message) {
 				a = message.getData();
 				y = compute(a);
-				System.out.println("EEEEEEEEEEEEEEEE got this:"+a+" and responding this: "+y);
 				send();
 			}
 		});

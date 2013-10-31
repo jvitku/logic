@@ -24,22 +24,14 @@ public class MisoGateTester extends GateTester{
 
 		log = connectedNode.getLog();
 
-		System.out.println("00000000000000000000000 on staaaart!!!!");
-
 		super.connectGateOutput(connectedNode);
-
-		System.out.println("00000000000000000000000 outpuuuut!!!!");
 
 		this.connectGateInputs(connectedNode);
 
-		System.out.println("00000000000000000000000 connecteed!!!!");
-
 		super.nodeIsPrepared();
-		System.out.println("00000000000000000000000 prepareeed!!!!");
 
 		// wait for preconditions: registered to master and some subscriber connected 
 		super.awaitCommunicationReady();
-		System.out.println("00000000000000000000000 communication readyyy!!!!");
 	}
 
 	/**
@@ -51,10 +43,7 @@ public class MisoGateTester extends GateTester{
 	 */
 	public boolean computeRemotely(boolean a, boolean b){
 
-		System.out.println("00000000000000000000000 waiting foooor communication readyyy!!!!");
 		super.awaitCommunicationReady();
-
-		System.out.println("00000000000000000000000 communication readyyy computeremotelyyyy!!!!");
 
 		this.checkForCorrectChanges(a, b);
 
