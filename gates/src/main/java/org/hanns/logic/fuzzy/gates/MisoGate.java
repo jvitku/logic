@@ -5,9 +5,10 @@ import org.ros.concurrent.CancellableLoop;
 import org.ros.message.MessageListener;
 import org.ros.node.ConnectedNode;
 
-import std_msgs.Bool;
-
 /**
+ * Pass two membership functions (automatically cut-off to range of <0;1>) and the gate 
+ * will return the result of particular fuzzy operation.
+ * 
  * @author Jaroslav Vitku vitkujar@fel.cvut.cz
  * 
  */
@@ -15,12 +16,9 @@ public abstract class MisoGate extends MisoAbstractGate<std_msgs.Float32> {
 
 
 	private float a = 0,b = 0, y=0;
-	
-	//private volatile boolean inited = false;
 
 	protected void send(){
-		if(!inited)
-			return;
+		super.awaitCommunicationReady();
 
 		std_msgs.Float32 out = publisher.newMessage();
 		out.setData(y);
@@ -28,6 +26,8 @@ public abstract class MisoGate extends MisoAbstractGate<std_msgs.Float32> {
 		log.info("Received data, publishing this: \"" + out.getData() + " !! on topic: "+yT);
 	}
 
+	public abstract float compute(float a, float b);
+	
 	public int getSleepTime(){ return this.sleepTime; }
 
 	@Override
@@ -41,8 +41,8 @@ public abstract class MisoGate extends MisoAbstractGate<std_msgs.Float32> {
 		subscriberA.addMessageListener(new MessageListener<std_msgs.Float32>() {
 			@Override
 			public void onNewMessage(std_msgs.Float32 message) {
-				a = message.getData();
-			//	y = compute(a,b);
+				a = cutOff(message.getData());
+				y = compute(a,b);
 				send();
 				//System.out.println("received data on AAAA; responding to: ("+a+","+b+")="+y);
 			}
@@ -50,17 +50,16 @@ public abstract class MisoGate extends MisoAbstractGate<std_msgs.Float32> {
 		subscriberB.addMessageListener(new MessageListener<std_msgs.Float32>() {
 			@Override
 			public void onNewMessage(std_msgs.Float32 message) {
-				b = message.getData();
-//				y = compute(a,b);
+				b = cutOff(message.getData());
+				y = compute(a,b);
 				send();
 				//System.out.println("received data on BBBB; responding to: ("+a+","+b+")="+y);			
 			}
 		});
 
 		// register publisher
-		publisher = connectedNode.newPublisher(yT, std_msgs.Bool._TYPE);		
-		inited = true;
-
+		publisher = connectedNode.newPublisher(yT, std_msgs.Float32._TYPE);		
+		super.nodeIsPrepared();
 
 		// infinite loop
 		connectedNode.executeCancellableLoop(new CancellableLoop() {
@@ -72,14 +71,28 @@ public abstract class MisoGate extends MisoAbstractGate<std_msgs.Float32> {
 			protected void loop() throws InterruptedException {
 
 				if(SEND){
-				//	std_msgs.Bool out = publisher.newMessage();
-		//			out.setData(y);
-			//		publisher.publish(out);
-					//log.info("Publishing this: \"" + out.getData() + " !! on topic: "+yT);
+					std_msgs.Float32 out = publisher.newMessage();
+					out.setData(y);
+					publisher.publish(out);
+					log.info("Publishing this: \"" + out.getData() + " !! on topic: "+yT);
 				}
 				//System.out.println("Hi I am Miso gate and I am here");
 				Thread.sleep(sleepTime);
 			}
 		});
+	}
+	
+	/**
+	 * Get the degree of membership and cut-off it into <0;1>
+	 * 
+	 * @param degree
+	 * @return
+	 */
+	private float cutOff(float degree){
+		if(degree<0)
+			return 0;
+		if(degree>1)
+			return 1;
+		return degree;
 	}
 }

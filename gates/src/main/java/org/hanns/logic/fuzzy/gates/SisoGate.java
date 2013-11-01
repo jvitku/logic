@@ -1,47 +1,46 @@
 package org.hanns.logic.fuzzy.gates;
 
 import org.apache.commons.logging.Log;
+import org.hanns.logic.gates.SisoAbstractGate;
 import org.ros.concurrent.CancellableLoop;
 import org.ros.message.MessageListener;
-import org.ros.node.AbstractNodeMain;
 import org.ros.node.ConnectedNode;
 import org.ros.node.topic.Publisher;
 import org.ros.node.topic.Subscriber;
 
-import std_msgs.Bool;
-
 /**
+ * Pass one membership function (automatically cut-off to range of <0;1>) and the gate 
+ * will return the result of particular unary fuzzy operation.
+ * 
  * @author Jaroslav Vitku vitkujar@fel.cvut.cz
  * 
  */
-public abstract class SisoGate extends AbstractNodeMain {
+public abstract class SisoGate extends SisoAbstractGate<std_msgs.Float32> {
 
 	private final boolean SEND = false; 		// send periodically each "time step"?
 	private final int sleepTime = 10000;		// everything handled by listeners
 
 	// ROS stuff
-	Subscriber<std_msgs.Bool> subscriberA;
-	Publisher<std_msgs.Bool> publisher;
+	Subscriber<std_msgs.Float32> subscriberA;
+	Publisher<std_msgs.Float32> publisher;
 	Log log;
 	
 	public final String aT = "logic/gates/ina";
 	public final String yT = "logic/gates/outa";
 
-	private boolean a = false, y=false;
-	private volatile boolean inited = false;
+	private float a = 0, y=0;
 	
 	/**
 	 * implement this in order to make computation 
 	 * @param a input value A
 	 * @return output value Y
 	 */
-	protected abstract boolean compute(boolean a);
+	protected abstract float compute(float a);
 
-	private void send(){
-		if(!inited)
-			return;
-		
-		std_msgs.Bool out = publisher.newMessage();
+	protected void send(){
+		super.awaitCommunicationReady();
+
+		std_msgs.Float32 out = publisher.newMessage();
 		out.setData(y);
 		publisher.publish(out);
 		log.info("Received data, publishing this: \"" + out.getData() + " !! on topic: "+yT);
@@ -54,22 +53,20 @@ public abstract class SisoGate extends AbstractNodeMain {
 		log = connectedNode.getLog();
 		
 		// register subscribers
-		subscriberA = connectedNode.newSubscriber(aT, std_msgs.Bool._TYPE);
+		subscriberA = connectedNode.newSubscriber(aT, std_msgs.Float32._TYPE);
 
-		subscriberA.addMessageListener(new MessageListener<std_msgs.Bool>() {
+		subscriberA.addMessageListener(new MessageListener<std_msgs.Float32>() {
 			@Override
-			public void onNewMessage(Bool message) {
-				a = message.getData();
+			public void onNewMessage(std_msgs.Float32 message) {
+				a = cutOff(message.getData());
 				y = compute(a);
-				System.out.println("EEEEEEEEEEEEEEEE got this:"+a+" and responding this: "+y);
 				send();
 			}
 		});
 
 		// register publisher
-		publisher = connectedNode.newPublisher(yT, std_msgs.Bool._TYPE);		
-		inited = true;
-
+		publisher = connectedNode.newPublisher(yT, std_msgs.Float32._TYPE);		
+		super.nodeIsPrepared();
 		
 		// infinite loop
 		connectedNode.executeCancellableLoop(new CancellableLoop() {
@@ -81,7 +78,7 @@ public abstract class SisoGate extends AbstractNodeMain {
 			protected void loop() throws InterruptedException {
 
 				if(SEND){
-					std_msgs.Bool out = publisher.newMessage();
+					std_msgs.Float32 out = publisher.newMessage();
 					out.setData(y);
 					publisher.publish(out);
 					log.info("Publishing this: \"" + out.getData() + " !! on topic: "+yT);
@@ -90,4 +87,19 @@ public abstract class SisoGate extends AbstractNodeMain {
 			}
 		});
 	}
+	
+	/**
+	 * Get the degree of membership and cut-off it into <0;1>
+	 * 
+	 * @param degree
+	 * @return
+	 */
+	private float cutOff(float degree){
+		if(degree<0)
+			return 0;
+		if(degree>1)
+			return 1;
+		return degree;
+	}
+	
 }

@@ -1,0 +1,47 @@
+package org.hanns.logic.fuzzy.membership;
+
+import org.ros.message.MessageListener;
+import org.ros.node.ConnectedNode;
+import org.ros.node.topic.Subscriber;
+
+import std_msgs.Float32;
+
+/**
+ * Compute triangle fuzzy membership function.
+ * @see: http://www.inf.ufpr.br/aurora/disciplinas/topicosia2/livros/search/FR.pdf
+ * 
+ * @author Jaroslav Vitku
+ */
+public abstract class Linear extends Membership {
+
+	protected float alpha=0, beta=0;
+	protected Subscriber<Float32> alphaSub, betaSub;
+	
+	@Override
+	public void onStart(ConnectedNode connectedNode){
+		super.onStart(connectedNode);
+		
+		alphaSub = connectedNode.newSubscriber(acT, Float32._TYPE);
+		betaSub = connectedNode.newSubscriber(bcT, Float32._TYPE);
+		
+		// after receiving new configuration, recompute and re-send new data
+		alphaSub.addMessageListener(new MessageListener<Float32>() {
+			@Override
+			public void onNewMessage(Float32 message) {
+				alpha = message.getData();
+				compute();
+				send();
+			}
+		});
+		
+		betaSub.addMessageListener(new MessageListener<Float32>() {
+			@Override
+			public void onNewMessage(Float32 message) {
+				beta = message.getData();
+				compute();
+				send();
+			}
+		});
+	}
+	
+}

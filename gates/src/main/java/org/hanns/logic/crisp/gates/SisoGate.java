@@ -1,13 +1,12 @@
 package org.hanns.logic.crisp.gates;
 
 import org.apache.commons.logging.Log;
+import org.hanns.logic.gates.SisoAbstractGate;
 import org.ros.concurrent.CancellableLoop;
 import org.ros.message.MessageListener;
 import org.ros.node.ConnectedNode;
 import org.ros.node.topic.Publisher;
 import org.ros.node.topic.Subscriber;
-
-import ctu.nengoros.nodes.CommunicationAwareNode;
 
 import std_msgs.Bool;
 
@@ -15,7 +14,7 @@ import std_msgs.Bool;
  * @author Jaroslav Vitku vitkujar@fel.cvut.cz
  * 
  */
-public abstract class SisoGate extends CommunicationAwareNode {
+public abstract class SisoGate extends SisoAbstractGate<std_msgs.Bool> {
 
 	private final boolean SEND = false; 		// send periodically each "time step"?
 	private final int sleepTime = 10000;		// everything handled by listeners
@@ -37,7 +36,7 @@ public abstract class SisoGate extends CommunicationAwareNode {
 	 */
 	protected abstract boolean compute(boolean a);
 
-	private void send(){
+	protected void send(){
 		super.awaitCommunicationReady();
 
 		std_msgs.Bool out = publisher.newMessage();
