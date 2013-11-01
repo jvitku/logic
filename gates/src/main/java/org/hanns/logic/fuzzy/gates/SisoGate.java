@@ -25,9 +25,6 @@ public abstract class SisoGate extends SisoAbstractGate<std_msgs.Float32> {
 	Publisher<std_msgs.Float32MultiArray> publisher;
 	Log log;
 	
-	public final String aT = "logic/gates/ina";
-	public final String yT = "logic/gates/outa";
-
 	private float a = 0, y=0;
 	
 	/**
