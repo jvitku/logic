@@ -6,8 +6,13 @@ import org.ros.node.ConnectedNode;
 import ctu.nengoros.nodes.topicParticipant.ConnectedParticipantPublisher;
 import ctu.nengoros.nodes.topicParticipant.ParticipantPublisher;
 
+/**
+ * ROS node for testing a SISO Fuzzy gate, launch, check all connections, send/receive data.
+ * 
+ * @author Jaroslav Vitku
+ *
+ */
 public class SisoFuzzyGateTester extends GateTester{
-
 
 	@Override
 	public GraphName getDefaultNodeName() { return GraphName.of("SisoFuzzyGateTester"); }

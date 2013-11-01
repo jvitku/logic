@@ -8,7 +8,12 @@ import org.ros.node.ConnectedNode;
 import static org.junit.Assert.fail;
 import ctu.nengoros.nodes.topicParticipant.ConnectedParticipantPublisher;
 import ctu.nengoros.nodes.topicParticipant.ParticipantPublisher;
-
+/**
+ * ROS node for testing a MISO Fuzzy gate, launch, check all connections, send/receive data.
+ * 
+ * @author Jaroslav Vitku
+ *
+ */
 public class MisoFuzzyGateTester extends GateTester{
 
 	// initial conditions for gates is this on inputs:
