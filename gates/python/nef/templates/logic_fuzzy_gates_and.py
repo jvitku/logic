@@ -15,13 +15,13 @@ from ctu.nengoros.comm.nodeFactory import NodeGroup as NodeGroup
 from ctu.nengoros.comm.rosutils import RosUtils as RosUtils
 
 # node utils..
-title='LogicNAND'
-label='LogicNAND'
-icon='logic_gates_nand.png'
+title='FuzzyAND'
+label='FuzzyAND'
+icon='logic_fuzzy_gates_and.png'
 
 # parameters for initializing the node
 params=[
-('name','Select name for NeuralModule NAND',str),
+('name','Select name for NeuralModule FuzzyAND',str),
 ('independent','Can be group pndependent? (pushed into namespace?) select true',bool)
 ]
 
@@ -34,16 +34,16 @@ def test_params(net,p):
         pass
 
 
-def make(net,name='NeuralModule which implements logical NAND operation', 
+def make(net,name='NeuralModule which implements FuzzyAND operation', 
 independent=True, useQuick=True):
 
-    finder = "org.hanns.logic.gates.impl.NAND";
+    finder = "org.hanns.logic.fuzzy.gates.impl.AND";
 
     # create group with a name
     g = NodeGroup(name, independent);    	# create independent group called..
-    g.addNode(finder, "logic_gates_NAND", "java");      # start java node and name it finder
+    g.addNode(finder, "logic_fuzzy_gates_AND", "java");      # start java node and name it finder
 
-    neuron = NeuralModule(name+"_logic_gates_nand", g) # construct the neural module 
+    neuron = NeuralModule(name+"_logic_fuzzy_gates_AND", g) # construct the neural module 
     neuron.createEncoder("logic/gates/ina", "bool",1)   # termination = input of neuron (4xfloat)
     neuron.createEncoder("logic/gates/inb", "bool",1)   # termination = input of neuron (4xfloat)
     neuron.createDecoder("logic/gates/outa", "bool",1)  # origin = output of neuron (min and max)

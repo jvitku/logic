@@ -13,7 +13,7 @@ from ca.nengo.model import Units
 from rosnodes import logic_gates
 
 # creates nef network and adds it to nengo (this must be first in the script) 
-net=nef.Network('Neural module - find min and max and publishes')
+net=nef.Network('Demo script which shows network of fuzzy logic gates')
 net.add_to_nengo()  # here: delete old (toplevel) network and replace it with the newly CREATED one
 
 # Create function generators, white noise with params: baseFreq, maxFreq [rad/s], RMS, seed
@@ -23,30 +23,18 @@ net.add(gen1)
 net.add(gen2)
 
 # Add nodes
-myAND = logic_gates.and_node("myAND")
+myAND = logic_gates.fuzzyand_node("myAND")
 net.add(myAND)
 
-myXOR = logic_gates.xor_node("myXOR")
-net.add(myXOR)
-
-myNAND = logic_gates.nand_node("myNAND")
-net.add(myNAND)
-
-myOR = logic_gates.or_node("myOR")
+myOR = logic_gates.fuzzyor_node("myOR")
 net.add(myOR)
 
-myNOT = logic_gates.not_node("myNOT")
+myNOT = logic_gates.fuzzynot_node("myNOT")
 net.add(myNOT)
 
 # Wire inputs
 net.connect(gen1, myAND.getTermination('logic/gates/ina'))
 net.connect(gen2, myAND.getTermination('logic/gates/inb'))
-
-net.connect(gen1, myXOR.getTermination('logic/gates/ina'))
-net.connect(gen2, myXOR.getTermination('logic/gates/inb'))
-
-net.connect(gen1, myNAND.getTermination('logic/gates/ina'))
-net.connect(gen2, myNAND.getTermination('logic/gates/inb'))
 
 net.connect(gen1, myOR.getTermination('logic/gates/ina'))
 net.connect(gen2, myOR.getTermination('logic/gates/inb'))
@@ -56,12 +44,6 @@ net.connect(gen1, myNOT.getTermination('logic/gates/ina'))
 # Wire outputs
 A=net.make('AND_net',neurons=100,dimensions=1,radius=1)    
 net.connect(myAND.getOrigin('logic/gates/outa'), A)
-
-B=net.make('XOR_net',neurons=100,dimensions=1,radius=1)    
-net.connect(myXOR.getOrigin('logic/gates/outa'), B)
-
-C=net.make('NAND_net',neurons=100,dimensions=1,radius=1)    
-net.connect(myNAND.getOrigin('logic/gates/outa'), C)
 
 D=net.make('OR_net',neurons=100,dimensions=1,radius=1)    
 net.connect(myOR.getOrigin('logic/gates/outa'), D)

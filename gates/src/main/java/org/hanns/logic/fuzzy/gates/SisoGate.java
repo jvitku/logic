@@ -21,8 +21,8 @@ public abstract class SisoGate extends SisoAbstractGate<std_msgs.Float32> {
 	private final int sleepTime = 10000;		// everything handled by listeners
 
 	// ROS stuff
-	Subscriber<std_msgs.Float32> subscriberA;
-	Publisher<std_msgs.Float32> publisher;
+	Subscriber<std_msgs.Float32MultiArray> subscriberA;
+	Publisher<std_msgs.Float32MultiArray> publisher;
 	Log log;
 	
 	public final String aT = "logic/gates/ina";
@@ -40,8 +40,8 @@ public abstract class SisoGate extends SisoAbstractGate<std_msgs.Float32> {
 	protected void send(){
 		super.awaitCommunicationReady();
 
-		std_msgs.Float32 out = publisher.newMessage();
-		out.setData(y);
+		std_msgs.Float32MultiArray out = publisher.newMessage();
+		out.setData(new float[]{y});
 		publisher.publish(out);
 		log.info("Received data, publishing this: \"" + out.getData() + " !! on topic: "+yT);
 	}
@@ -53,19 +53,19 @@ public abstract class SisoGate extends SisoAbstractGate<std_msgs.Float32> {
 		log = connectedNode.getLog();
 		
 		// register subscribers
-		subscriberA = connectedNode.newSubscriber(aT, std_msgs.Float32._TYPE);
+		subscriberA = connectedNode.newSubscriber(aT, std_msgs.Float32MultiArray._TYPE);
 
-		subscriberA.addMessageListener(new MessageListener<std_msgs.Float32>() {
+		subscriberA.addMessageListener(new MessageListener<std_msgs.Float32MultiArray>() {
 			@Override
-			public void onNewMessage(std_msgs.Float32 message) {
-				a = cutOff(message.getData());
+			public void onNewMessage(std_msgs.Float32MultiArray message) {
+				a = cutOff(message.getData()[0]);
 				y = compute(a);
 				send();
 			}
 		});
 
 		// register publisher
-		publisher = connectedNode.newPublisher(yT, std_msgs.Float32._TYPE);		
+		publisher = connectedNode.newPublisher(yT, std_msgs.Float32MultiArray._TYPE);		
 		super.nodeIsPrepared();
 		
 		// infinite loop
@@ -78,8 +78,8 @@ public abstract class SisoGate extends SisoAbstractGate<std_msgs.Float32> {
 			protected void loop() throws InterruptedException {
 
 				if(SEND){
-					std_msgs.Float32 out = publisher.newMessage();
-					out.setData(y);
+					std_msgs.Float32MultiArray out = publisher.newMessage();
+					out.setData(new float[]{y});
 					publisher.publish(out);
 					log.info("Publishing this: \"" + out.getData() + " !! on topic: "+yT);
 				}

@@ -15,13 +15,13 @@ from ctu.nengoros.comm.nodeFactory import NodeGroup as NodeGroup
 from ctu.nengoros.comm.rosutils import RosUtils as RosUtils
 
 # node utils..
-title='LogicNOT'
-label='LogicNOT'
-icon='logic_gates_not.png'
+title='FuzzyNOT'
+label='FuzzyNOT'
+icon='logic_fuzzy_gates_not.png'
 
 # parameters for initializing the node
 params=[
-('name','Select name for NeuralModule NOT',str),
+('name','Select name for NeuralModule FuzzyNOT',str),
 ('independent','Can be group pndependent? (pushed into namespace?) select true',bool)
 ]
 
@@ -34,18 +34,18 @@ def test_params(net,p):
         pass
 
 
-def make(net,name='NeuralModule which implements logical NOT operation', 
+def make(net,name='NeuralModule which implements logical Fuzzy NOT operation', 
 independent=True, useQuick=True):
 
-    finder = "org.hanns.logic.gates.impl.NOT";
+    finder = "org.hanns.logic.fuzzy.gates.impl.NOT";
 
     # create group with a name
     g = NodeGroup(name, independent);    	# create independent group called..
-    g.addNode(finder, "logic_gates_NOT", "java");      # start java node and name it finder
-    neuron = NeuralModule(name+"_logic_gates_not", g) # construct the neural module 
+    g.addNode(finder, "logic_fuzzy_gates_NOT", "java");      # start java node and name it finder
+    neuron = NeuralModule(name+"_logic_fuzzy_gates_not", g) # construct the neural module 
 
-    neuron.createEncoder("logic/gates/ina", "bool",1)   # termination = input of neuron (4xfloat)
-    neuron.createDecoder("logic/gates/outa", "bool",1)  # origin = output of neuron (min and max)
+    neuron.createEncoder("logic/gates/ina", "float",1)   # termination = input of neuron (4xfloat)
+    neuron.createDecoder("logic/gates/outa", "float",1)  # origin = output of neuron (min and max)
 
     many=net.add(neuron)                    # add it into the network
 

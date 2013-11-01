@@ -28,9 +28,9 @@ public abstract class MisoAbstractGate<T> extends SisoAbstractGate<T> {
 	public final String outfT = "logic/gates/outf";
 	
 	// configuration input topics
-	public final String bcT = "logic/gates/inbc";
-	public final String ccT = "logic/gates/incc";
-	public final String dcT = "logic/gates/indc";
-	public final String ecT = "logic/gates/inec";
-	public final String fcT = "logic/gates/infc";
+	public final String bcT = "logic/gates/confb";
+	public final String ccT = "logic/gates/confc";
+	public final String dcT = "logic/gates/confd";
+	public final String ecT = "logic/gates/confe";
+	public final String fcT = "logic/gates/conff";
 }

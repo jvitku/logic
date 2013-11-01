@@ -11,15 +11,15 @@ import org.ros.node.ConnectedNode;
  * @author Jaroslav Vitku vitkujar@fel.cvut.cz
  * 
  */
-public abstract class Membership extends MisoAbstractGate<std_msgs.Float32> {
+public abstract class Membership extends MisoAbstractGate<std_msgs.Float32MultiArray> {
 
 	protected float x=0, y=0;						// data
 
 	protected void send(){
 		super.awaitCommunicationReady();
 
-		std_msgs.Float32 out = publisher.newMessage();
-		out.setData(y);
+		std_msgs.Float32MultiArray out = publisher.newMessage();
+		out.setData(new float[]{y});
 		publisher.publish(out);
 		log.info("Received data, publishing this: \"" + out.getData() + " !! on topic: "+yT);
 	}
@@ -64,20 +64,20 @@ public abstract class Membership extends MisoAbstractGate<std_msgs.Float32> {
 	 */
 	protected void getDataChannel(ConnectedNode connectedNode){
 		// data input - x
-		subscriberA = connectedNode.newSubscriber(aT, std_msgs.Float32._TYPE);
+		subscriberA = connectedNode.newSubscriber(aT, std_msgs.Float32MultiArray._TYPE);
 
-		subscriberA.addMessageListener(new MessageListener<std_msgs.Float32>() {
+		subscriberA.addMessageListener(new MessageListener<std_msgs.Float32MultiArray>() {
 			@Override
-			public void onNewMessage(std_msgs.Float32 message) {
-				x = message.getData();
-				y = compute();
+			public void onNewMessage(std_msgs.Float32MultiArray message) {
+				x = message.getData()[0];
+				compute();
 				send();
 				//System.out.println("received data on AAAA; responding to: ("+a+","+b+")="+y);
 			}
 		});
 		
 		// data output - y
-		publisher = connectedNode.newPublisher(outaT, std_msgs.Float32._TYPE);
+		publisher = connectedNode.newPublisher(outaT, std_msgs.Float32MultiArray._TYPE);
 	}
 
 }

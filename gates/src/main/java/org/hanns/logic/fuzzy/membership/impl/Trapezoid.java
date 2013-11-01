@@ -5,12 +5,12 @@ import org.ros.namespace.GraphName;
 import org.ros.node.ConnectedNode;
 import org.ros.node.topic.Subscriber;
 
-import std_msgs.Float32;
+import std_msgs.Float32MultiArray;
 
 public class Trapezoid extends Triangle{
 	
 	private float delta=0;
-	private Subscriber<Float32> deltaSub;
+	private Subscriber<Float32MultiArray> deltaSub;
 	
 	@Override
 	public GraphName getDefaultNodeName() { return GraphName.of("FuzzyTrapezoidMembership"); }
@@ -45,12 +45,12 @@ public class Trapezoid extends Triangle{
 	public void onStart(ConnectedNode connectedNode){
 		super.onStart(connectedNode);
 		
-		deltaSub = connectedNode.newSubscriber(dcT, Float32._TYPE);
+		deltaSub = connectedNode.newSubscriber(dcT, Float32MultiArray._TYPE);
 		
-		deltaSub.addMessageListener(new MessageListener<Float32>() {
+		deltaSub.addMessageListener(new MessageListener<Float32MultiArray>() {
 			@Override
-			public void onNewMessage(Float32 message) {
-				delta = message.getData();
+			public void onNewMessage(Float32MultiArray message) {
+				delta = message.getData()[0];
 				compute();
 				send();
 			}

@@ -6,7 +6,7 @@ import org.ros.namespace.GraphName;
 import org.ros.node.ConnectedNode;
 import org.ros.node.topic.Subscriber;
 
-import std_msgs.Float32;
+import std_msgs.Float32MultiArray;
 
 /**
  * Compute triangle fuzzy membership function.
@@ -17,7 +17,7 @@ import std_msgs.Float32;
 public class Triangle extends Linear {
 
 	protected float gamma=0;
-	protected Subscriber<Float32> gammaSub;
+	protected Subscriber<Float32MultiArray> gammaSub;
 	
 	
 	@Override
@@ -55,12 +55,12 @@ public class Triangle extends Linear {
 	public void onStart(ConnectedNode connectedNode){
 		super.onStart(connectedNode);
 		
-		gammaSub = connectedNode.newSubscriber(ccT, Float32._TYPE);
+		gammaSub = connectedNode.newSubscriber(ccT, Float32MultiArray._TYPE);
 		
-		gammaSub.addMessageListener(new MessageListener<Float32>() {
+		gammaSub.addMessageListener(new MessageListener<Float32MultiArray>() {
 			@Override
-			public void onNewMessage(Float32 message) {
-				gamma = message.getData();
+			public void onNewMessage(Float32MultiArray message) {
+				gamma = message.getData()[0];
 				compute();
 				send();
 			}

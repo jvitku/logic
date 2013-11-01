@@ -12,11 +12,18 @@ from ctu.nengoros.modules.impl import DefaultAsynNeuralModule as NeuralModule
 #from ctu.nengoros.modules.impl import DefaultNeuralModule as NeuralModule
 
 ################# Create Neural Modules containing the ROS nodes
-AND = "org.hanns.logic.gates.impl.AND";
-XOR = "org.hanns.logic.gates.impl.XOR";
-OR = "org.hanns.logic.gates.impl.OR";
-NAND = "org.hanns.logic.gates.impl.NAND";
-NOT = "org.hanns.logic.gates.impl.NOT";
+
+# crisp gates
+AND = "org.hanns.logic.crisp.gates.impl.AND";
+XOR = "org.hanns.logic.crisp.gates.impl.XOR";
+OR = "org.hanns.logic.crisp.gates.impl.OR";
+NAND = "org.hanns.logic.crisp.gates.impl.NAND";
+NOT = "org.hanns.logic.crisp.gates.impl.NOT";
+
+# fuzzy gates
+fAND = "org.hanns.logic.fuzzy.gates.impl.AND";
+fOR = "org.hanns.logic.fuzzy.gates.impl.OR";
+fNOT = "org.hanns.logic.fuzzy.gates.impl.NOT";
 
 # Initialize ROS(java) node implementning AND function.
 #
@@ -69,4 +76,35 @@ def not_node(name):
 	module.createEncoder("logic/gates/ina", "bool", 1)
 	module.createDecoder("logic/gates/outa", "bool", 1)
 	return module
+
+
+################################################################### fuzzy gates
+
+
+def fuzzyand_node(name):
+	g = NodeGroup("FuzzyAND", True);
+	g.addNode(fAND, "FuzzyAND", "java");
+	module = NeuralModule(name+'_FuzzyAND', g)
+	module.createEncoder("logic/gates/ina", "float", 1)
+	module.createEncoder("logic/gates/inb", "float", 1)
+	module.createDecoder("logic/gates/outa", "float", 1)
+	return module
+
+def fuzzyor_node(name):
+	g = NodeGroup("FuzzyOR", True);
+	g.addNode(fOR, "FuzzyOR", "java");
+	module = NeuralModule(name+'_FuzzyOR', g)
+	module.createEncoder("logic/gates/ina", "float", 1)
+	module.createEncoder("logic/gates/inb", "float", 1)
+	module.createDecoder("logic/gates/outa", "float", 1)
+	return module
+
+def fuzzynot_node(name):
+	g = NodeGroup("FuzzyNOT", True);
+	g.addNode(fNOT, "FuzzyNOT", "java");
+	module = NeuralModule(name+'_FuzzyNOT', g)
+	module.createEncoder("logic/gates/ina", "float", 1)
+	module.createDecoder("logic/gates/outa", "float", 1)
+	return module
+
 
