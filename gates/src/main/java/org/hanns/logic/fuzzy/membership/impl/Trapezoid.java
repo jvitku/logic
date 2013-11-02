@@ -51,8 +51,9 @@ public class Trapezoid extends Triangle{
 			@Override
 			public void onNewMessage(Float32MultiArray message) {
 				delta = message.getData()[0];
-				compute();
-				send();
+				//y = compute();
+				//send();
+				checkRanges();
 			}
 		});
 		

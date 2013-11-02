@@ -48,7 +48,7 @@ public class CommTests extends ctu.nengoros.nodes.RosCommunicationTest{
 		rr.stop();
 		gate.stop();
 	}
-	
+	/**/
 	@Test
 	public void decreasingLinear() {
 		//this.misoFuzzyGateTest("org.hanns.logic.fuzzy.gates.impl.AND", 0);
@@ -145,5 +145,5 @@ public class CommTests extends ctu.nengoros.nodes.RosCommunicationTest{
 		assertTrue(mt.computeRempotely(0.75f) == 0.5f);
 		rr.stop();
 		gate.stop();
-	}
+	}/**/
 }

@@ -41,11 +41,11 @@ public class FourParamTester extends FcnAbstractTester{
 	private float changeDelta(float delta){
 		std_msgs.Float32MultiArray out = deltaPub.newMessage();
 		out.setData(new float[]{delta});
-		this.waitingForResponse = true;
+		//this.waitingForResponse = true;
 		deltaPub.publish(out);
 		currentDelta = delta;
 		log.info("Changing remote delta to: \"" + out.getData()+" and waiting for new x");
-		this.awaitResponse();
+		//this.awaitResponse();
 		return response;
 	}
 
@@ -53,11 +53,11 @@ public class FourParamTester extends FcnAbstractTester{
 	private float changeGamma(float gamma){
 		std_msgs.Float32MultiArray out = gammaPub.newMessage();
 		out.setData(new float[]{gamma});
-		this.waitingForResponse = true;
+		//this.waitingForResponse = true;
 		gammaPub.publish(out);
 		currentGamma = gamma;
 		log.info("Changing remote gamma to: \"" + out.getData()+" and waiting for new x");
-		this.awaitResponse();
+		//this.awaitResponse();
 		return response;
 	}
 

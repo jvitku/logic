@@ -61,8 +61,9 @@ public class Triangle extends Linear {
 			@Override
 			public void onNewMessage(Float32MultiArray message) {
 				gamma = message.getData()[0];
-				compute();
-				send();
+				//y = compute();
+				//send();
+				checkRanges();
 			}
 		});
 		

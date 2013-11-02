@@ -88,22 +88,22 @@ public abstract class FcnAbstractTester extends MisoAbstractGate<std_msgs.Float3
 	protected float changeAlpha(float alpha){
 		std_msgs.Float32MultiArray out = alphaPub.newMessage();
 		out.setData(new float[]{alpha});
-		this.waitingForResponse = true;
+	//	this.waitingForResponse = true;
 		alphaPub.publish(out);
 		currentAlpha = alpha;
 		log.info("Changing remote alpha to: \"" + out.getData()+" and waiting for new x");
-		this.awaitResponse();
+//		this.awaitResponse();
 		return response;
 	}
 
 	protected float changeBeta(float beta){
 		std_msgs.Float32MultiArray out = betaPub.newMessage();
 		out.setData(new float[]{beta});
-		this.waitingForResponse = true;
+	//	this.waitingForResponse = true;
 		betaPub.publish(out);
 		currentBeta = beta;
 		log.info("Changing remote beta to: \"" + out.getData()+" and waiting for new x");
-		this.awaitResponse();
+//		this.awaitResponse();
 		return response;
 	}
 
