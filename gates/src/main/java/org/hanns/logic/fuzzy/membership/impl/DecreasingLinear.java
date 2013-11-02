@@ -42,7 +42,6 @@ public class DecreasingLinear extends Membership{
 	@Override
 	public void onStart(ConnectedNode connectedNode){
 		log = connectedNode.getLog();
-
 		super.getDataChannel(connectedNode);
 		
 		this.initAlpha(connectedNode);

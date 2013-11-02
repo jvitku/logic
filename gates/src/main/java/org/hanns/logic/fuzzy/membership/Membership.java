@@ -23,7 +23,8 @@ public abstract class Membership extends MisoAbstractGate<std_msgs.Float32MultiA
 	protected float x=0, y=0;						// data
 
 	protected void send(){
-		//super.awaitCommunicationReady();
+		super.awaitCommunicationReady();
+		
 		if(publisher==null)
 			return;
 
@@ -57,14 +58,6 @@ public abstract class Membership extends MisoAbstractGate<std_msgs.Float32MultiA
 		return -1;
 	}
 
-	@Override
-	public void onStart(final ConnectedNode connectedNode) {
-		log = connectedNode.getLog();
-
-		//this.getDataChannel(connectedNode);
-
-		// add here your configuration channel (in sub-classes)
-	}
 
 	/**
 	 * Register input/output into the network.
