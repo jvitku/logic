@@ -87,7 +87,6 @@ def not_node(name):
 
 ################################################################### fuzzy gates
 
-
 def fuzzyand_node(name):
 	g = NodeGroup("FuzzyAND", True);
 	g.addNode(fAND, "FuzzyAND", "java");
@@ -116,16 +115,6 @@ def fuzzynot_node(name):
 
 
 ############################################################ fuzzy membership functions
-
-#def fuzzyMemIncLin(name):									# ____|----
-#	g = NodeGroup("FuzzyMemLinInc", True);
-#	g.addNode(fmincl, "FuzzyMemLinInc", "java");
-#	module = NeuralModule(name+'_FuzzyMemLinInc', g)
-#	module.createEncoder("logic/gates/ina", "float", 1)		# x
-#	module.createEncoder("logic/gates/confa", "float", 1) 	# alpha
-#	module.createEncoder("logic/gates/confb", "float", 1) 	# beta
-#	module.createDecoder("logic/gates/outa", "float", 1)	# y
-#	return module
 	
 def fuzzyMemDecLin(name):									# ----\____
 	g = NodeGroup("FuzzyMemLinDec", True);
@@ -160,7 +149,7 @@ def fuzzyMemTrapezoid(name):								# ___|---\___
 	module.createDecoder("logic/gates/outa", "float", 1)	# y
 	return module
 
-def fuzzyMemIncLin(name):									# ____|\____
+def fuzzyMemIncLin(name):									# ____|----
 	g = NodeGroup("FuzzyMemIncLin", True);
 	g.addNode(flininc,"FuzzyMemIncLin","java");
 	module = NeuralModule(name+'_FuzzyMemIncLin', g)
