@@ -1,5 +1,8 @@
-# This is python interface for the project logic/gates
+# This is python interface for the project logic/gates. This helps using particular ROsJava nodes in Jython scripts for Nengo simulator.
 #
+# Import this in your scirpt in order to use it, for examples see ../nr-demo/ scripts.
+#
+# Note: that Decreasing and IncreasingLinear membership functions are TODO (not working in Nengo GUI some..why)
 #
 # author Jaroslav Vitku
 
@@ -29,7 +32,7 @@ fNOT 		= "org.hanns.logic.fuzzy.gates.impl.NOT";
 flininc		= "org.hanns.logic.fuzzy.membership.impl.IncreasingLinear";
 flindec		= "org.hanns.logic.fuzzy.membership.impl.DecreasingLinear";
 ftrap 		= "org.hanns.logic.fuzzy.membership.impl.Trapezoid";
-ftriangle 	= "org.hanns.logic.fuzzy.membership.impl.Triangle";
+ftriangle 	= "org.hanns.logic.fuzzy.membership.impl.Triangular";
 
 
 # Initialize ROS(java) node implementning AND function.

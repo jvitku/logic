@@ -36,8 +36,8 @@ public class IncreasingLinear extends Membership{
 	@Override
 	public void checkRanges() {
 		if(beta < alpha){
-			alpha = super.getAverage(alpha, beta);
-			beta = alpha;
+			//alpha = super.getAverage(alpha, beta);
+			alpha = beta;
 		}
 	}
 
@@ -46,13 +46,14 @@ public class IncreasingLinear extends Membership{
 
 	@Override
 	public void onStart(ConnectedNode connectedNode){
-		super.onStart(connectedNode);
+		//super.onStart(connectedNode);
+		log = connectedNode.getLog();
+		super.getDataChannel(connectedNode);
 		
-		super.initAlpha(connectedNode);
-		super.initBeta(connectedNode);
+		this.initAlpha(connectedNode);
+		this.initBeta(connectedNode);
 		
 		super.nodeIsPrepared();
 	}
-
 	
 }

@@ -1,8 +1,9 @@
-# Create the NeuralModule which receives 4 float values, finds min and max, converts them to int and passes to the output.
+# Demo showing how to use fuzzy logic gates implemented as ROS nodes in the Nengoros.
+##
+# To launch this script: open the Nengo gui (probably nengo/simulator-ui/nengo) and weite into the command line:
+# 	run nr-demo/gates/logic_crisp_gates.py
+# Note that this cript has to be either symlinked or copied into the location: nengo/simulator-ui/nengo/nr-demo/gates/
 #
-# starts: 
-#   -ROS-java node (class extending the org.ros.Node) which does exactly the thing described above
-#   -NeuralModule with modem that communicates with the ROS node 
 #
 # by Jaroslav Vitku [vitkujar@fel.cvut.cz]
 

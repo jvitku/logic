@@ -4,6 +4,7 @@ import org.hanns.logic.fuzzy.membership.Membership;
 import org.ros.namespace.GraphName;
 import org.ros.node.ConnectedNode;
 
+
 /**
  * Fuzzy linear decreasing membership function. 
  * 
@@ -11,7 +12,7 @@ import org.ros.node.ConnectedNode;
  *
  */
 public class DecreasingLinear extends Membership{
-
+	
 	/**
 	 * Compute fuzzy decreasing linear membership function. 
 	 * @see: http://www.inf.ufpr.br/aurora/disciplinas/topicosia2/livros/search/FR.pdf
@@ -30,9 +31,8 @@ public class DecreasingLinear extends Membership{
 	@Override
 	public void checkRanges() {
 		if(beta < alpha){
-			alpha = super.getAverage(alpha, beta);
-			alpha=beta;
-			beta = alpha;
+			//alpha = super.getAverage(alpha, beta);
+			alpha = beta;
 		}
 	}
 
@@ -41,12 +41,13 @@ public class DecreasingLinear extends Membership{
 
 	@Override
 	public void onStart(ConnectedNode connectedNode){
-		super.onStart(connectedNode);
+		log = connectedNode.getLog();
+
+		super.getDataChannel(connectedNode);
 		
-		super.initAlpha(connectedNode);
-		super.initBeta(connectedNode);
+		this.initAlpha(connectedNode);
+		this.initBeta(connectedNode);
 		
 		super.nodeIsPrepared();
 	}
-	
 }

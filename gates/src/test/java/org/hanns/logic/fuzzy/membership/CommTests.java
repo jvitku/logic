@@ -85,7 +85,7 @@ public class CommTests extends ctu.nengoros.nodes.RosCommunicationTest{
 	public void triangleTest() {
 		//this.misoFuzzyGateTest("org.hanns.logic.fuzzy.gates.impl.AND", 0);
 		
-		RosRunner gate = runNode("org.hanns.logic.fuzzy.membership.impl.Triangle");
+		RosRunner gate = runNode("org.hanns.logic.fuzzy.membership.impl.Triangular");
 		RosRunner rr = runNode("org.hanns.logic.fuzzy.membership.ThreeParamTester");
 		ThreeParamTester mt = (ThreeParamTester)rr.getNode();
 		

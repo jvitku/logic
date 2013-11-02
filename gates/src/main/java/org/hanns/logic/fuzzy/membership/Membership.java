@@ -16,14 +16,16 @@ import std_msgs.Float32MultiArray;
  */
 public abstract class Membership extends MisoAbstractGate<std_msgs.Float32MultiArray> {
 
-	protected float alpha=0,beta=0,gamma=0, delta=0;
-	
+	protected float alpha=0, beta=0, gamma=0, delta=0;
+
 	protected Subscriber<Float32MultiArray> alphaSub, betaSub, gammaSub, deltaSub;
-	
+
 	protected float x=0, y=0;						// data
 
 	protected void send(){
-		super.awaitCommunicationReady();
+		//super.awaitCommunicationReady();
+		if(publisher==null)
+			return;
 
 		std_msgs.Float32MultiArray out = publisher.newMessage();
 		out.setData(new float[]{y});
@@ -37,7 +39,7 @@ public abstract class Membership extends MisoAbstractGate<std_msgs.Float32MultiA
 	 * Each membership function has some constraints on parameter values, check them here.
 	 */
 	protected abstract void checkRanges();
-	
+
 	public int getSleepTime(){ return this.sleepTime; }
 
 	/**
@@ -54,12 +56,12 @@ public abstract class Membership extends MisoAbstractGate<std_msgs.Float32MultiA
 		System.err.println("Membership functino:correctValues: values are already OK!");
 		return -1;
 	}
-	
+
 	@Override
 	public void onStart(final ConnectedNode connectedNode) {
 		log = connectedNode.getLog();
 
-		this.getDataChannel(connectedNode);
+		//this.getDataChannel(connectedNode);
 
 		// add here your configuration channel (in sub-classes)
 	}
@@ -82,14 +84,14 @@ public abstract class Membership extends MisoAbstractGate<std_msgs.Float32MultiA
 				//System.out.println("received data on AAAA; responding to: ("+a+","+b+")="+y);
 			}
 		});
-		
+
 		// data output - y
 		publisher = connectedNode.newPublisher(outAT, std_msgs.Float32MultiArray._TYPE);
 	}
-	
+
 	protected void initAlpha(ConnectedNode connectedNode){
 		alphaSub = connectedNode.newSubscriber(confAT, Float32MultiArray._TYPE);
-		
+
 		// after receiving new configuration, recompute and re-send new data
 		alphaSub.addMessageListener(new MessageListener<Float32MultiArray>() {
 			@Override
@@ -101,7 +103,7 @@ public abstract class Membership extends MisoAbstractGate<std_msgs.Float32MultiA
 			}
 		});
 	}
-	
+
 	protected void initBeta(ConnectedNode connectedNode){
 		betaSub = connectedNode.newSubscriber(confBT, Float32MultiArray._TYPE);
 
@@ -129,10 +131,10 @@ public abstract class Membership extends MisoAbstractGate<std_msgs.Float32MultiA
 			}
 		});
 	}
-	
+
 	protected void initDelta(ConnectedNode connectedNode){
 		deltaSub = connectedNode.newSubscriber(confDT, Float32MultiArray._TYPE);
-		
+
 		deltaSub.addMessageListener(new MessageListener<Float32MultiArray>() {
 			@Override
 			public void onNewMessage(Float32MultiArray message) {
@@ -143,5 +145,5 @@ public abstract class Membership extends MisoAbstractGate<std_msgs.Float32MultiA
 			}
 		});
 	}
-	
+
 }

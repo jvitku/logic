@@ -10,7 +10,7 @@ import org.ros.node.ConnectedNode;
  * 
  * @author Jaroslav Vitku
  */
-public class Triangle extends Membership {
+public class Triangular extends Membership {
 
 	@Override
 	public GraphName getDefaultNodeName() { return GraphName.of("FuzzyTriangleMembership"); }
@@ -34,8 +34,8 @@ public class Triangle extends Membership {
 	public void checkRanges() {
 
 		if(beta < alpha){
-			alpha = super.getAverage(alpha, beta);
-			beta = alpha;
+			//alpha = super.getAverage(alpha, beta);
+			alpha = beta;
 		}
 		// probably cannot move beta already
 		if(gamma < beta){
@@ -45,13 +45,18 @@ public class Triangle extends Membership {
 
 	@Override
 	public void onStart(ConnectedNode connectedNode){
-		super.onStart(connectedNode);
-
-		super.initAlpha(connectedNode);
-		super.initBeta(connectedNode);
+//		super.onStart(connectedNode);
+		
+		log = connectedNode.getLog();
+		this.getDataChannel(connectedNode);
+		
+		this.initAlpha(connectedNode);
+		this.initBeta(connectedNode);
 		this.initGamma(connectedNode);
 
 		super.nodeIsPrepared();	// indicate that everything is configured
 	}
+	
+
 
 }

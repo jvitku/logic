@@ -1,4 +1,5 @@
-# Simple (Drag and drop template for) NeuralModule that has some inputs/outputs 
+# Drag and drop template for the Nengo simulator which represents ROS node implementing particular logic operation.
+#
 # by Jaroslav Vitku
 #
 # for more information how to make such template, see: http://nengo.ca/docs/html/advanced/dragndrop.html or notes/add_node_to_gui.md
