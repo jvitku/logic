@@ -1,6 +1,6 @@
 package org.hanns.logic.fuzzy.membership.impl;
 
-import org.hanns.logic.fuzzy.membership.Linear;
+import org.hanns.logic.fuzzy.membership.Membership;
 import org.ros.namespace.GraphName;
 import org.ros.node.ConnectedNode;
 
@@ -11,7 +11,7 @@ import org.ros.node.ConnectedNode;
  * @author Jaroslav Vitku
  *
  */
-public class IncreasingLinear extends Linear{
+public class IncreasingLinear extends Membership{
 
 	/**
 	 * Compute fuzzy increasing linear membership function. 
@@ -19,14 +19,7 @@ public class IncreasingLinear extends Linear{
 	 */
 	@Override
 	public float compute() {
-		/*
-		if(x<alpha)
-			System.out.println("x: "+x+" alpha: "+alpha+" beta: "+beta+" ---- y"+0);
-		else if(x>beta)
-			System.out.println("x: "+x+" alpha: "+alpha+" beta: "+beta+" ---- y"+1);
-		else
-			System.out.println("x: "+x+" alpha: "+alpha+" beta: "+beta+" ---- yy"+(x-alpha)/(beta-alpha));
-		*/
+
 		if(x<alpha)
 			return 0;
 		
@@ -54,6 +47,9 @@ public class IncreasingLinear extends Linear{
 	@Override
 	public void onStart(ConnectedNode connectedNode){
 		super.onStart(connectedNode);
+		
+		super.initAlpha(connectedNode);
+		super.initBeta(connectedNode);
 		
 		super.nodeIsPrepared();
 	}

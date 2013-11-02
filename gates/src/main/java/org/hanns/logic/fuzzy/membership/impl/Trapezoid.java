@@ -1,16 +1,11 @@
 package org.hanns.logic.fuzzy.membership.impl;
 
-import org.ros.message.MessageListener;
+import org.hanns.logic.fuzzy.membership.Membership;
 import org.ros.namespace.GraphName;
 import org.ros.node.ConnectedNode;
-import org.ros.node.topic.Subscriber;
 
-import std_msgs.Float32MultiArray;
-
-public class Trapezoid extends Triangle{
+public class Trapezoid extends Membership{
 	
-	private float delta=0;
-	private Subscriber<Float32MultiArray> deltaSub;
 	
 	@Override
 	public GraphName getDefaultNodeName() { return GraphName.of("FuzzyTrapezoidMembership"); }
@@ -35,7 +30,14 @@ public class Trapezoid extends Triangle{
 	
 	@Override
 	public void checkRanges(){
-		super.checkRanges();
+		if(beta < alpha){
+			alpha = super.getAverage(alpha, beta);
+			beta = alpha;
+		}
+		// probably cannot move beta already
+		if(gamma < beta){
+			gamma = beta;
+		}
 		
 		if(delta<gamma)
 			delta = gamma;
@@ -45,19 +47,13 @@ public class Trapezoid extends Triangle{
 	public void onStart(ConnectedNode connectedNode){
 		super.onStart(connectedNode);
 		
-		deltaSub = connectedNode.newSubscriber(confDT, Float32MultiArray._TYPE);
-		
-		deltaSub.addMessageListener(new MessageListener<Float32MultiArray>() {
-			@Override
-			public void onNewMessage(Float32MultiArray message) {
-				delta = message.getData()[0];
-				//y = compute();
-				//send();
-				checkRanges();
-			}
-		});
+		super.initAlpha(connectedNode);
+		super.initBeta(connectedNode);
+		super.initGamma(connectedNode);
+		super.initDelta(connectedNode);
 		
 		super.nodeIsPrepared();	// indicate that everything is configured
 	}
+	
 	
 }

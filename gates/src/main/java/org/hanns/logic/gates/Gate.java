@@ -25,7 +25,6 @@ public abstract class Gate<T> extends CommunicationAwareNode {
 	
 	protected Log log;
 	
-	
 	// this should be set to true after everything is ready in onStart()
 	protected volatile boolean inited = false;
 	

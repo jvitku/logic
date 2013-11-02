@@ -52,8 +52,8 @@ net.connect(gen1, declin.getTermination('logic/gates/ina'))
 net.connect(gen1, triangle.getTermination('logic/gates/ina'))
 net.connect(gen1, trapezoid.getTermination('logic/gates/ina'))
 
-net.connect('alpha1', incl.getTermination('logic/gates/confa'))
-net.connect('beta1', incl.getTermination('logic/gates/confb'))
+net.connect('alpha2', incl.getTermination('logic/gates/confa'))
+net.connect('beta2', incl.getTermination('logic/gates/confb'))
 
 net.connect('alpha1', declin.getTermination('logic/gates/confa'))
 net.connect('beta1', declin.getTermination('logic/gates/confb'))

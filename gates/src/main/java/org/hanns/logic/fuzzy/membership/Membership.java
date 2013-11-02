@@ -3,6 +3,9 @@ package org.hanns.logic.fuzzy.membership;
 import org.hanns.logic.gates.MisoAbstractGate;
 import org.ros.message.MessageListener;
 import org.ros.node.ConnectedNode;
+import org.ros.node.topic.Subscriber;
+
+import std_msgs.Float32MultiArray;
 
 /**
  * Pass two membership functions (automatically cut-off to range of <0;1>) and the gate 
@@ -13,6 +16,10 @@ import org.ros.node.ConnectedNode;
  */
 public abstract class Membership extends MisoAbstractGate<std_msgs.Float32MultiArray> {
 
+	protected float alpha=0,beta=0,gamma=0, delta=0;
+	
+	protected Subscriber<Float32MultiArray> alphaSub, betaSub, gammaSub, deltaSub;
+	
 	protected float x=0, y=0;						// data
 
 	protected void send(){
@@ -79,5 +86,62 @@ public abstract class Membership extends MisoAbstractGate<std_msgs.Float32MultiA
 		// data output - y
 		publisher = connectedNode.newPublisher(outAT, std_msgs.Float32MultiArray._TYPE);
 	}
+	
+	protected void initAlpha(ConnectedNode connectedNode){
+		alphaSub = connectedNode.newSubscriber(confAT, Float32MultiArray._TYPE);
+		
+		// after receiving new configuration, recompute and re-send new data
+		alphaSub.addMessageListener(new MessageListener<Float32MultiArray>() {
+			@Override
+			public void onNewMessage(Float32MultiArray message) {
+				alpha = message.getData()[0];
+				//y = compute();
+				//send();
+				checkRanges();
+			}
+		});
+	}
+	
+	protected void initBeta(ConnectedNode connectedNode){
+		betaSub = connectedNode.newSubscriber(confBT, Float32MultiArray._TYPE);
 
+		betaSub.addMessageListener(new MessageListener<Float32MultiArray>() {
+			@Override
+			public void onNewMessage(Float32MultiArray message) {
+				beta = message.getData()[0];
+				//y = compute();
+				//send();
+				checkRanges();
+			}
+		});
+	}
+
+	protected void initGamma(ConnectedNode connectedNode){
+		gammaSub = connectedNode.newSubscriber(confCT, Float32MultiArray._TYPE);
+
+		gammaSub.addMessageListener(new MessageListener<Float32MultiArray>() {
+			@Override
+			public void onNewMessage(Float32MultiArray message) {
+				gamma = message.getData()[0];
+				//y = compute();
+				//send();
+				checkRanges();
+			}
+		});
+	}
+	
+	protected void initDelta(ConnectedNode connectedNode){
+		deltaSub = connectedNode.newSubscriber(confDT, Float32MultiArray._TYPE);
+		
+		deltaSub.addMessageListener(new MessageListener<Float32MultiArray>() {
+			@Override
+			public void onNewMessage(Float32MultiArray message) {
+				delta = message.getData()[0];
+				//y = compute();
+				//send();
+				checkRanges();
+			}
+		});
+	}
+	
 }
