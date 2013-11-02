@@ -80,6 +80,11 @@ public abstract class FcnAbstractTester extends MisoAbstractGate<std_msgs.Float3
 			return this.changeBeta(beta);
 	}
 
+	/**
+	 * Do not call this externally, call changeMembershipFcnParameter instead
+	 * @param alpha
+	 * @return
+	 */
 	protected float changeAlpha(float alpha){
 		std_msgs.Float32MultiArray out = alphaPub.newMessage();
 		out.setData(new float[]{alpha});
@@ -148,8 +153,8 @@ public abstract class FcnAbstractTester extends MisoAbstractGate<std_msgs.Float3
 	 */
 	protected void connectTestedNodeConfigs(ConnectedNode connectedNode){
 		// build and register both publishers
-		alphaPub = connectedNode.newPublisher(acT, std_msgs.Float32MultiArray._TYPE);
-		betaPub = connectedNode.newPublisher(bcT, std_msgs.Float32MultiArray._TYPE);
+		alphaPub = connectedNode.newPublisher(confAT, std_msgs.Float32MultiArray._TYPE);
+		betaPub = connectedNode.newPublisher(confBT, std_msgs.Float32MultiArray._TYPE);
 
 		if(requireGateRunning){
 			super.participants.registerParticipant(
@@ -166,7 +171,7 @@ public abstract class FcnAbstractTester extends MisoAbstractGate<std_msgs.Float3
 
 	protected void connectTestedNodeInput(ConnectedNode connectedNode){
 		// data output - y
-		publisher = connectedNode.newPublisher(aT, std_msgs.Float32MultiArray._TYPE);
+		publisher = connectedNode.newPublisher(inAT, std_msgs.Float32MultiArray._TYPE);
 
 		if(requireGateRunning){
 			super.participants.registerParticipant(
@@ -185,7 +190,7 @@ public abstract class FcnAbstractTester extends MisoAbstractGate<std_msgs.Float3
 	protected void connectTestedNodeOutput(ConnectedNode connectedNode){
 
 		// subscribe to gate output
-		subscriber = connectedNode.newSubscriber(outaT, std_msgs.Float32MultiArray._TYPE);
+		subscriber = connectedNode.newSubscriber(outAT, std_msgs.Float32MultiArray._TYPE);
 
 		// create listener
 		subscriber.addMessageListener(new MessageListener<std_msgs.Float32MultiArray>() {

@@ -21,8 +21,8 @@ public abstract class Linear extends Membership {
 	public void onStart(ConnectedNode connectedNode){
 		super.onStart(connectedNode);
 		
-		alphaSub = connectedNode.newSubscriber(acT, Float32MultiArray._TYPE);
-		betaSub = connectedNode.newSubscriber(bcT, Float32MultiArray._TYPE);
+		alphaSub = connectedNode.newSubscriber(confAT, Float32MultiArray._TYPE);
+		betaSub = connectedNode.newSubscriber(confBT, Float32MultiArray._TYPE);
 		
 		// after receiving new configuration, recompute and re-send new data
 		alphaSub.addMessageListener(new MessageListener<Float32MultiArray>() {

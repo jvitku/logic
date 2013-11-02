@@ -11,14 +11,14 @@ public abstract class SisoAbstractGate<T> extends Gate<T> {
 
 	// data communication channel
 	protected Subscriber<T> subscriberA;
-	public final String aT = "logic/gates/ina";	// topic
+	public final String inAT = "logic/gates/ina";	// topic
 	
 	// data configuration topic (optional)
-	public final String acT = "logic/gates/confa";
+	public final String confAT = "logic/gates/confa";
 	
 	// output data channel
 	protected Publisher<T> publisherA;
-	public final String outaT = "logic/gates/outa";
+	public final String outAT = "logic/gates/outa";
 	
 	
 	/**

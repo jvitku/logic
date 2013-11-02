@@ -34,8 +34,8 @@ public abstract class MisoGate extends MisoAbstractGate<std_msgs.Bool> {
 		log = connectedNode.getLog();
 
 		// register subscribers
-		subscriberA = connectedNode.newSubscriber(aT, std_msgs.Bool._TYPE);
-		subscriberB = connectedNode.newSubscriber(bT, std_msgs.Bool._TYPE);
+		subscriberA = connectedNode.newSubscriber(inAT, std_msgs.Bool._TYPE);
+		subscriberB = connectedNode.newSubscriber(inBT, std_msgs.Bool._TYPE);
 
 		subscriberA.addMessageListener(new MessageListener<std_msgs.Bool>() {
 			@Override

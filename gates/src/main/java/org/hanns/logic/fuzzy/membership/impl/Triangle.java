@@ -55,7 +55,7 @@ public class Triangle extends Linear {
 	public void onStart(ConnectedNode connectedNode){
 		super.onStart(connectedNode);
 		
-		gammaSub = connectedNode.newSubscriber(ccT, Float32MultiArray._TYPE);
+		gammaSub = connectedNode.newSubscriber(confCT, Float32MultiArray._TYPE);
 		
 		gammaSub.addMessageListener(new MessageListener<Float32MultiArray>() {
 			@Override

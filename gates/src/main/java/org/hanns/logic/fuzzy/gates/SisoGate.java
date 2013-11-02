@@ -50,7 +50,7 @@ public abstract class SisoGate extends SisoAbstractGate<std_msgs.Float32> {
 		log = connectedNode.getLog();
 		
 		// register subscribers
-		subscriberA = connectedNode.newSubscriber(aT, std_msgs.Float32MultiArray._TYPE);
+		subscriberA = connectedNode.newSubscriber(inAT, std_msgs.Float32MultiArray._TYPE);
 
 		subscriberA.addMessageListener(new MessageListener<std_msgs.Float32MultiArray>() {
 			@Override

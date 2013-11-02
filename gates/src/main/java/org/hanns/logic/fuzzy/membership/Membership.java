@@ -64,7 +64,7 @@ public abstract class Membership extends MisoAbstractGate<std_msgs.Float32MultiA
 	 */
 	protected void getDataChannel(ConnectedNode connectedNode){
 		// data input - x
-		subscriberA = connectedNode.newSubscriber(aT, std_msgs.Float32MultiArray._TYPE);
+		subscriberA = connectedNode.newSubscriber(inAT, std_msgs.Float32MultiArray._TYPE);
 
 		subscriberA.addMessageListener(new MessageListener<std_msgs.Float32MultiArray>() {
 			@Override
@@ -77,7 +77,7 @@ public abstract class Membership extends MisoAbstractGate<std_msgs.Float32MultiA
 		});
 		
 		// data output - y
-		publisher = connectedNode.newPublisher(outaT, std_msgs.Float32MultiArray._TYPE);
+		publisher = connectedNode.newPublisher(outAT, std_msgs.Float32MultiArray._TYPE);
 	}
 
 }

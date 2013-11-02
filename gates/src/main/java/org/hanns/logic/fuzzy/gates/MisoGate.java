@@ -35,8 +35,8 @@ public abstract class MisoGate extends MisoAbstractGate<std_msgs.Float32MultiArr
 		log = connectedNode.getLog();
 
 		// register subscribers
-		subscriberA = connectedNode.newSubscriber(aT, std_msgs.Float32MultiArray._TYPE);
-		subscriberB = connectedNode.newSubscriber(bT, std_msgs.Float32MultiArray._TYPE);
+		subscriberA = connectedNode.newSubscriber(inAT, std_msgs.Float32MultiArray._TYPE);
+		subscriberB = connectedNode.newSubscriber(inBT, std_msgs.Float32MultiArray._TYPE);
 
 		subscriberA.addMessageListener(new MessageListener<std_msgs.Float32MultiArray>() {
 			@Override

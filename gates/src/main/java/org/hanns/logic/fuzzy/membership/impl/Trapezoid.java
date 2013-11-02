@@ -45,7 +45,7 @@ public class Trapezoid extends Triangle{
 	public void onStart(ConnectedNode connectedNode){
 		super.onStart(connectedNode);
 		
-		deltaSub = connectedNode.newSubscriber(dcT, Float32MultiArray._TYPE);
+		deltaSub = connectedNode.newSubscriber(confDT, Float32MultiArray._TYPE);
 		
 		deltaSub.addMessageListener(new MessageListener<Float32MultiArray>() {
 			@Override

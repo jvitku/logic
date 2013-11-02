@@ -14,23 +14,23 @@ public abstract class MisoAbstractGate<T> extends SisoAbstractGate<T> {
 	protected Subscriber<T> subscriberA, subscriberB;
 	
 	// data input topics
-	public final String bT = "logic/gates/inb";
-	public final String cT = "logic/gates/inc";
-	public final String dT = "logic/gates/ind";
-	public final String eT = "logic/gates/ine";
-	public final String fT = "logic/gates/inf";
+	public final String inBT = "logic/gates/inb";
+	public final String inCT = "logic/gates/inc";
+	public final String indDT = "logic/gates/ind";
+	public final String indET = "logic/gates/ine";
+	public final String indFT = "logic/gates/inf";
 	
 	// data output topic 
-	public final String outbT = "logic/gates/outb";
-	public final String outcT = "logic/gates/outc";
-	public final String outdT = "logic/gates/outd";
-	public final String outeT = "logic/gates/oute";
-	public final String outfT = "logic/gates/outf";
+	public final String outBT = "logic/gates/outb";
+	public final String outCT = "logic/gates/outc";
+	public final String outDT = "logic/gates/outd";
+	public final String outET = "logic/gates/oute";
+	public final String outFT = "logic/gates/outf";
 	
 	// configuration input topics
-	public final String bcT = "logic/gates/confb";
-	public final String ccT = "logic/gates/confc";
-	public final String dcT = "logic/gates/confd";
-	public final String ecT = "logic/gates/confe";
-	public final String fcT = "logic/gates/conff";
+	public final String confBT = "logic/gates/confb";
+	public final String confCT = "logic/gates/confc";
+	public final String confDT = "logic/gates/confd";
+	public final String confET = "logic/gates/confe";
+	public final String confFT = "logic/gates/conff";
 }

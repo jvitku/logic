@@ -19,13 +19,20 @@ public class IncreasingLinear extends Linear{
 	 */
 	@Override
 	public float compute() {
-		System.out.println("x: "+x+" alpha: "+alpha+" beta: "+beta);
+		/*
+		if(x<alpha)
+			System.out.println("x: "+x+" alpha: "+alpha+" beta: "+beta+" ---- y"+0);
+		else if(x>beta)
+			System.out.println("x: "+x+" alpha: "+alpha+" beta: "+beta+" ---- y"+1);
+		else
+			System.out.println("x: "+x+" alpha: "+alpha+" beta: "+beta+" ---- yy"+(x-alpha)/(beta-alpha));
+		*/
 		if(x<alpha)
 			return 0;
 		
 		if(x>beta)
 			return 1;
-		System.out.println("are here "+(x-alpha)/(beta-alpha));
+
 		return ((x-alpha)/(beta-alpha));
 	}
 
