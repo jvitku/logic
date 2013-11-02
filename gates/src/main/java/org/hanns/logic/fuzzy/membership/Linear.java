@@ -29,7 +29,7 @@ public abstract class Linear extends Membership {
 			@Override
 			public void onNewMessage(Float32MultiArray message) {
 				alpha = message.getData()[0];
-				compute();
+				y = compute();
 				send();
 			}
 		});
@@ -38,7 +38,7 @@ public abstract class Linear extends Membership {
 			@Override
 			public void onNewMessage(Float32MultiArray message) {
 				beta = message.getData()[0];
-				compute();
+				y = compute();
 				send();
 			}
 		});

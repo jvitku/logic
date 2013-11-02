@@ -21,7 +21,7 @@ public abstract class Membership extends MisoAbstractGate<std_msgs.Float32MultiA
 		std_msgs.Float32MultiArray out = publisher.newMessage();
 		out.setData(new float[]{y});
 		publisher.publish(out);
-		log.info("Received data, publishing this: \"" + out.getData() + " !! on topic: "+yT);
+		log.info("Received data, publishing this: " + out.getData()[0] + " !! on topic: "+yT+" y is: "+y);
 	}
 
 	protected abstract float compute();
@@ -70,7 +70,7 @@ public abstract class Membership extends MisoAbstractGate<std_msgs.Float32MultiA
 			@Override
 			public void onNewMessage(std_msgs.Float32MultiArray message) {
 				x = message.getData()[0];
-				compute();
+				y = compute();
 				send();
 				//System.out.println("received data on AAAA; responding to: ("+a+","+b+")="+y);
 			}

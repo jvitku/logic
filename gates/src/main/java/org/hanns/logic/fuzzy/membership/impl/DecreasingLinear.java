@@ -24,7 +24,7 @@ public class DecreasingLinear extends Linear{
 		if(x>beta)
 			return 0;
 		
-		return -((x-alpha)/(beta-alpha));
+		return (1-((x-alpha)/(beta-alpha)));
 	}
 	
 	@Override

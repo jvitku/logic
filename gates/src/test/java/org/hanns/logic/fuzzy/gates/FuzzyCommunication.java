@@ -21,18 +21,18 @@ public class FuzzyCommunication extends ctu.nengoros.nodes.RosCommunicationTest{
 	private Random r = new Random();
 	
 	@Test
-	public void FuzzyAND() {
+	public void fuzzyAND() {
 		this.misoFuzzyGateTest("org.hanns.logic.fuzzy.gates.impl.AND", 0);
 	}
 
 	@Test
-	public void FuzzyOR() {
+	public void fuzzyOR() {
 		this.misoFuzzyGateTest("org.hanns.logic.fuzzy.gates.impl.OR", 1);
 	}
 
 	
 	@Test
-	public void FuzzyNOT(){
+	public void fuzzyNOT(){
 		
 		RosRunner gate = runNode("org.hanns.logic.fuzzy.gates.impl.NOT");
 		
