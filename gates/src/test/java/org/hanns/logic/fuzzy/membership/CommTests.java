@@ -78,4 +78,72 @@ public class CommTests extends ctu.nengoros.nodes.RosCommunicationTest{
 		gate.stop();
 	}
 	
+	/**
+	 * Testing of triangle could be more extensive.
+	 */
+	@Test
+	public void triangleTest() {
+		//this.misoFuzzyGateTest("org.hanns.logic.fuzzy.gates.impl.AND", 0);
+		
+		RosRunner gate = runNode("org.hanns.logic.fuzzy.membership.impl.Triangle");
+		RosRunner rr = runNode("org.hanns.logic.fuzzy.membership.ThreeParamTester");
+		ThreeParamTester mt = (ThreeParamTester)rr.getNode();
+		
+		// setup the node (online)
+		mt.changeMembershipFcnParameter(-0.5f,0,0); 
+		mt.changeMembershipFcnParameter(-0.5f,0,0.5f);
+		
+		assertTrue(mt.computeRempotely(10)==0);
+		assertTrue(mt.computeRempotely(-10)==0);
+		assertTrue(mt.computeRempotely(5)==0);
+		assertTrue(mt.computeRempotely(-5000)==0);
+		assertTrue(mt.computeRempotely(200)==0);
+		
+		assertTrue(mt.computeRempotely(-0.5f) == 0);
+		assertTrue(mt.computeRempotely(0.5f) == 0);
+		
+		assertTrue(mt.computeRempotely(0) == 1);
+		
+		assertTrue(mt.computeRempotely(-0.25f) == 0.5f);
+		assertTrue(mt.computeRempotely(0.25f) == 0.5f);
+		
+		rr.stop();
+		gate.stop();
+	}
+	
+	/**
+	 * Testing of trapezoid could be more extensive too.
+	 */
+	@Test
+	public void TrapezoidTest() {
+		
+		RosRunner gate = runNode("org.hanns.logic.fuzzy.membership.impl.Trapezoid");
+		RosRunner rr = runNode("org.hanns.logic.fuzzy.membership.FourParamTester");
+		FourParamTester mt = (FourParamTester)rr.getNode();
+		
+		// setup the node (online)
+		mt.changeMembershipFcnParameter(-1f,	0,		0		,0);
+		mt.changeMembershipFcnParameter(-1f,	-0.5f,	0		,0);
+		mt.changeMembershipFcnParameter(-1f,	-0.5f,	0.5f	,0);
+		mt.changeMembershipFcnParameter(-1f,	-0.5f,	0.5f	,1);
+		
+		
+		assertTrue(mt.computeRempotely(10)==0);
+		assertTrue(mt.computeRempotely(-10)==0);
+		assertTrue(mt.computeRempotely(5)==0);
+		assertTrue(mt.computeRempotely(-5000)==0);
+		assertTrue(mt.computeRempotely(200)==0);
+		
+		assertTrue(mt.computeRempotely(-0.5f) == 1);
+		assertTrue(mt.computeRempotely(0.5f) == 1);
+		assertTrue(mt.computeRempotely(0) == 1);
+			
+		assertTrue(mt.computeRempotely(-1f) == 0f);
+		assertTrue(mt.computeRempotely(1f) == 0f);
+		
+		assertTrue(mt.computeRempotely(-0.75f) == 0.5f);
+		assertTrue(mt.computeRempotely(0.75f) == 0.5f);
+		rr.stop();
+		gate.stop();
+	}
 }

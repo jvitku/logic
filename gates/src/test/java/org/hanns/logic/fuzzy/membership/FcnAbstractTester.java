@@ -38,7 +38,7 @@ public abstract class FcnAbstractTester extends MisoAbstractGate<std_msgs.Float3
 	protected final int maxwait = 5000, waittime = 2;	//ms
 
 	// check if my communication is connected somewhere?
-	public boolean requireGateRunning = false;
+	public boolean requireGateRunning = true;
 
 	protected Random r = new Random();
 

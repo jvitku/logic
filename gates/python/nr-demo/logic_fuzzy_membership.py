@@ -69,4 +69,3 @@ net.connect('delta3', trapezoid.getTermination('logic/gates/confd'))
 
 print 'Configuration complete.'
 
-s
