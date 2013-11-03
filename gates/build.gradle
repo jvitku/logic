@@ -41,7 +41,7 @@ repositories {
 }
 
 // Define the version and name of my stack (ROS convention)
-version             = '0.0.1-SNAPSHOT'
+version             = '0.0.2-SNAPSHOT'
 group               = 'org.hanns.logic'
 
 // This project depends on compilation of rosjava_core
