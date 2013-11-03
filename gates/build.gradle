@@ -48,7 +48,7 @@ group               = 'org.hanns.logic'
 dependencies {
 	compile 'ros.rosjava_core:rosjava:0.0.0-SNAPSHOT'
 	testCompile 'junit:junit:4.10'
-	testCompile 'ctu.nengoros:jroscore:0.0.1-SNAPSHOT'
-	compile 'ctu.nengoros:jroscore:0.0.1-SNAPSHOT'
+	testCompile 'ctu.nengoros:jroscore:0.0.2-SNAPSHOT'
+	compile 'ctu.nengoros:jroscore:0.0.2-SNAPSHOT'
 }
 
