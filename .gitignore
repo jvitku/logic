@@ -3,4 +3,15 @@
 .project
 .settings
 bin/
-build/
+
+gates/build/classes/
+gates/build/dependency-cache/
+gates/build/install/
+gates/build/libs/
+gates/build/poms/
+gates/build/reports/
+gates/build/resources/
+gates/build/scripts/
+gates/build/test-results/
+gates/build/tmp/
+
