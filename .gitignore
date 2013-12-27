@@ -3,4 +3,21 @@
 .project
 .settings
 bin/
+
+
+# ignore all build files
+gates/build/
 build/
+
+### ignore everything except docs
+gates/build/classes/
+gates/build/dependency-cache/
+gates/build/install/
+gates/build/libs/
+gates/build/poms/
+gates/build/reports/
+gates/build/resources/
+gates/build/scripts/
+gates/build/test-results/
+gates/build/tmp/
+
