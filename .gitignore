@@ -4,6 +4,12 @@
 .settings
 bin/
 
+
+# ignore all build files
+gates/build/
+build/
+
+### ignore everything except docs
 gates/build/classes/
 gates/build/dependency-cache/
 gates/build/install/
