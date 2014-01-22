@@ -5,8 +5,9 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import ctu.nengoros.RosRunner;
+import ctu.nengoros.network.node.testsuit.RosCommunicationTest;
 
-public class CommTests extends ctu.nengoros.nodes.RosCommunicationTest{
+public class CommTests extends RosCommunicationTest{
 
 	@Test
 	public void increasingLinear() {

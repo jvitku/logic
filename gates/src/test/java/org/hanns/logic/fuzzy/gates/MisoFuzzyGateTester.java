@@ -5,9 +5,9 @@ import java.util.Random;
 import org.ros.namespace.GraphName;
 import org.ros.node.ConnectedNode;
 
+import ctu.nengoros.network.node.testsuit.topicParticipant.ConnectedParticipantPublisher;
+import ctu.nengoros.network.node.testsuit.topicParticipant.ParticipantPublisher;
 import static org.junit.Assert.fail;
-import ctu.nengoros.nodes.topicParticipant.ConnectedParticipantPublisher;
-import ctu.nengoros.nodes.topicParticipant.ParticipantPublisher;
 /**
  * ROS node for testing a MISO Fuzzy gate, launch, check all connections, send/receive data.
  * 

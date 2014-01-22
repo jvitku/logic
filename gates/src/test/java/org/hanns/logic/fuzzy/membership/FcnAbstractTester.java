@@ -11,10 +11,10 @@ import org.ros.node.ConnectedNode;
 import org.ros.node.topic.Publisher;
 import org.ros.node.topic.Subscriber;
 
-import ctu.nengoros.nodes.topicParticipant.ConnectedParticipantPublisher;
-import ctu.nengoros.nodes.topicParticipant.ConnectedParticipantSubscriber;
-import ctu.nengoros.nodes.topicParticipant.ParticipantPublisher;
-import ctu.nengoros.nodes.topicParticipant.ParticipantSubscriber;
+import ctu.nengoros.network.node.testsuit.topicParticipant.ConnectedParticipantPublisher;
+import ctu.nengoros.network.node.testsuit.topicParticipant.ConnectedParticipantSubscriber;
+import ctu.nengoros.network.node.testsuit.topicParticipant.ParticipantPublisher;
+import ctu.nengoros.network.node.testsuit.topicParticipant.ParticipantSubscriber;
 
 
 public abstract class FcnAbstractTester extends MisoAbstractGate<std_msgs.Float32MultiArray>{

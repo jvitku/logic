@@ -3,8 +3,8 @@ package org.hanns.logic.fuzzy.gates;
 import org.ros.namespace.GraphName;
 import org.ros.node.ConnectedNode;
 
-import ctu.nengoros.nodes.topicParticipant.ConnectedParticipantPublisher;
-import ctu.nengoros.nodes.topicParticipant.ParticipantPublisher;
+import ctu.nengoros.network.node.testsuit.topicParticipant.ConnectedParticipantPublisher;
+import ctu.nengoros.network.node.testsuit.topicParticipant.ParticipantPublisher;
 
 /**
  * ROS node for testing a SISO Fuzzy gate, launch, check all connections, send/receive data.

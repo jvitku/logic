@@ -9,9 +9,10 @@ import org.junit.Test;
 import org.ros.node.NodeMain;
 
 import ctu.nengoros.RosRunner;
+import ctu.nengoros.network.node.testsuit.RosCommunicationTest;
 
 
-public class Communication extends ctu.nengoros.nodes.RosCommunicationTest{
+public class Communication extends RosCommunicationTest{
 	
 	@Test
 	public void launchDemoNode(){

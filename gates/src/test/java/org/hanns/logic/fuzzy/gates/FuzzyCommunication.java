@@ -9,13 +9,14 @@ import org.junit.Test;
 import org.ros.node.NodeMain;
 
 import ctu.nengoros.RosRunner;
+import ctu.nengoros.network.node.testsuit.RosCommunicationTest;
 
 /**
  * Test the correct communication and operation of all Fuzzy Logic Gates.
  * 
  * @author Jaroslav Vitku
  */
-public class FuzzyCommunication extends ctu.nengoros.nodes.RosCommunicationTest{
+public class FuzzyCommunication extends RosCommunicationTest{
 
 
 	private Random r = new Random();

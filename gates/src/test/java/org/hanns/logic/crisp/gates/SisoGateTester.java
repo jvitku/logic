@@ -3,8 +3,7 @@ package org.hanns.logic.crisp.gates;
 import org.ros.namespace.GraphName;
 import org.ros.node.ConnectedNode;
 
-import ctu.nengoros.nodes.topicParticipant.ConnectedParticipantPublisher;
-
+import ctu.nengoros.network.node.testsuit.topicParticipant.ConnectedParticipantPublisher;
 
 public class SisoGateTester extends GateTester{
 
