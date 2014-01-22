@@ -14,8 +14,6 @@ public class ThreeParamTester extends FcnAbstractTester{
 	protected Publisher<std_msgs.Float32MultiArray> gammaPub;
 	protected float currentGamma = 0;
 	
-	
-
 	public float changeMembershipFcnParameter(float alpha, float beta, float gamma){
 
 		super.awaitCommunicationReady();
