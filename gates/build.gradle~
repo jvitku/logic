@@ -35,8 +35,8 @@ repositories {
 	mavenLocal()
 
 	maven {
-		//url 'http://robotbrains.hideho.org/nexus/content/groups/ros-public'
-		url 'http://repo1.maven.org/maven2/'
+		url 'http://robotbrains.hideho.org/nexus/content/groups/ros-public'
+		//		url 'http://repo1.maven.org/maven2/'
 	}
 }
 
@@ -48,7 +48,7 @@ group               = 'org.hanns.logic'
 dependencies {
 	compile 'ros.rosjava_core:rosjava:0.0.0-SNAPSHOT'
 	testCompile 'junit:junit:4.10'
-	testCompile 'ctu.nengoros:jroscore:0.0.11-SNAPSHOT'// TODO this may cause compile errors..
-	compile 'ctu.nengoros:jroscore:0.0.11-SNAPSHOT'
+	testCompile 'ctu.nengoros:jroscore:0.0.7-SNAPSHOT'
+	compile 'ctu.nengoros:jroscore:0.0.7-SNAPSHOT'
 }
 
