@@ -144,9 +144,8 @@ public class DataGeneratorNode extends AbstractConfigurableHannsNode{
 
 		dataSeries = new int[noOutputs][len];
 		int pos = 0;
-
-		for(int i=0; i<noOutputs; i++){
-			for(int j=0; j<len; j++){
+		for(int j=0; j<len; j++){
+			for(int i=0; i<noOutputs; i++){
 				dataSeries[i][j] = parsedData[pos++];
 			}
 		}
@@ -157,7 +156,16 @@ public class DataGeneratorNode extends AbstractConfigurableHannsNode{
 			for(int j=0; j<len; j++){
 				dataSeriesSol[i][j] = parsedDataSol[pos++];
 			}
-		}		
+		}
+
+		System.out.println("DataGenerator here: will publish the following data series:");
+		for(int i=0; i<noOutputs; i++){
+			System.out.println("output "+i+"  "+SL.toStr(dataSeries[i]));
+		}
+		for(int i=0; i<noOutputsSol; i++){
+			System.out.println("sol "+i+"  "+SL.toStr(dataSeriesSol[i]));
+		}
+
 	}
 
 	/**
@@ -175,6 +183,8 @@ public class DataGeneratorNode extends AbstractConfigurableHannsNode{
 		dataSub.addMessageListener(new MessageListener<std_msgs.Float32MultiArray>() {
 			@Override
 			public void onNewMessage(std_msgs.Float32MultiArray message) {
+				System.err.println("message received!! ");
+
 				if(step % logPeriod==0  && step >0)
 					System.out.println(me+"<-"+topicDataIn+" Received new data, publishing new set of values");
 
@@ -203,8 +213,8 @@ public class DataGeneratorNode extends AbstractConfigurableHannsNode{
 
 		messageSolution.setData(sol);		// publish expected solution
 		dataPubSolution.publish(messageSolution);
-		
-		System.out.println("---------- publishing this: "+SL.toStr(data)+" and: "+SL.toStr(sol));
+
+		System.err.println("---------- publishing this: "+SL.toStr(data)+" and: "+SL.toStr(sol));
 	}
 
 

@@ -1,6 +1,7 @@
 package org.hanns.logic.utils.evaluators.ros;
 
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import org.ros.message.MessageListener;
@@ -30,16 +31,18 @@ public class MSENode extends AbstractConfigurableHannsNode{
 	public static final String topicDataInSupervised = "topicDataInSupervised";
 
 	// how many layers has the feed forward network that is used?
-	public static final String depthConf = "depth";
-	public static final String topicDepth = conf+depthConf;
-	public static final int DEF_DEPTH = 1;
+	public static final String delayConf = "delay";
+	public static final int DEF_DELAY = 1;
 
-	protected int depth;
+	protected int delay;
 	protected int dataSize;
 	protected int step = 0;
 	protected float mse = 0;
-	public float[] data, expected;
+	protected float[] data; //expected;//data, 
 
+	protected ArrayList<float[]> expectedBuffer;
+	protected int dataBufferLen = 10; 
+	
 	public boolean dataReceived = false, supervisedReceived = false;
 
 	protected ProsperityObserver o;						// not used, 1-MSE published directly 
@@ -86,7 +89,7 @@ public class MSENode extends AbstractConfigurableHannsNode{
 	protected void registerParameters(){
 		paramList = new ParamList();
 		paramList.addParam(noInputsConf, ""+DEF_NOINPUTS,"Dimension of input data (MSE is computed accross this vector");
-		paramList.addParam(depthConf, ""+DEF_DEPTH, "Depth of the feedforward network (synchronization of data)");
+		paramList.addParam(delayConf, ""+DEF_DELAY, "Depth of the feedforward network (synchronization of data)");
 
 		paramList.addParam(logToFileConf, ""+DEF_LTF, "Enables logging into file");
 		paramList.addParam(logPeriodConf, ""+DEF_LOGPERIOD, "How often to log?");
@@ -101,18 +104,25 @@ public class MSENode extends AbstractConfigurableHannsNode{
 		System.out.println(me+"parsing parameters");
 
 		// RL parameters (default alpha and gamma, but can be also modified online)
-		depth = r.getMyInteger(depthConf, DEF_DEPTH);
-		if(depth<=0){
-			System.err.println("Incorrect depth of the network, will use the default one: "+DEF_DEPTH);
-			depth = DEF_DEPTH;
+		delay = r.getMyInteger(delayConf, DEF_DELAY);
+		if(delay<0){
+			System.err.println("Incorrect delay of the network, will use the default one: "+DEF_DELAY);
+			delay = DEF_DELAY;
+		}
+		if(delay >= dataBufferLen){
+			dataBufferLen = delay+1;
 		}
 		dataSize = r.getMyInteger(noInputsConf, DEF_NOINPUTS);
-
+		
 		if(dataSize<=0){
 			System.err.println("Incorrect dimension of the data, will use the default one: "+DEF_NOINPUTS);
 			dataSize = DEF_NOINPUTS;
 		}
-		System.out.println(me+"Creating data structures.");
+		
+		//data = new float[dataSize];
+		data = new float[dataSize];
+		expectedBuffer = new ArrayList<float[]>(dataBufferLen);
+		mse = 0;
 	}
 
 
@@ -133,6 +143,8 @@ public class MSENode extends AbstractConfigurableHannsNode{
 				float[] data = message.getData();
 				//System.err.println("RECEIVED data of value.. "+SL.toStr(data));
 
+				System.err.println("MSE -  - --- received this array on A "+SL.toStr(data));
+				
 				if(data.length != dataSize)
 					log.error(me+":"+topicDataIn+": Received state description has" +
 							"unexpected length of"+data.length+"! Expected: "+ dataSize);
@@ -145,8 +157,8 @@ public class MSENode extends AbstractConfigurableHannsNode{
 					setData(data);
 					dataReceived = true;
 					if(bothReceived()){
-						clearReceived();
 						onNewDataReceived();
+						clearReceived();
 					}
 				}
 			}
@@ -161,6 +173,8 @@ public class MSENode extends AbstractConfigurableHannsNode{
 				float[] data = message.getData();
 				//System.err.println("RECEIVED data of value.. "+SL.toStr(data));
 
+				System.err.println("MSE -  - --- received this array on B "+SL.toStr(data));
+				
 				if(data.length != dataSize)
 					log.error(me+":"+topicDataIn+": Received state description has" +
 							"unexpected length of"+data.length+"! Expected: "+ dataSize);
@@ -169,12 +183,12 @@ public class MSENode extends AbstractConfigurableHannsNode{
 					if(step % logPeriod==0  && step >0)
 						System.out.println(me+"<-"+topicDataIn+" Received new data &" +
 								" state description "+SL.toStr(data));
-
+					
 					setExpected(data);
 					supervisedReceived = true;
 					if(bothReceived()){
-						clearReceived();
 						onNewDataReceived();
+						clearReceived();
 					}
 				}
 			}
@@ -183,7 +197,10 @@ public class MSENode extends AbstractConfigurableHannsNode{
 
 	public void onNewDataReceived(){
 		step++;
-		mse += this.computeDifferences(data, expected);
+		
+		if(expectedBuffer.size() >= delay+1){
+			mse += this.computeDifferences(expectedBuffer.get(delay), data);	
+		}
 		
 		this.publishProsperity();
 	}
@@ -194,20 +211,29 @@ public class MSENode extends AbstractConfigurableHannsNode{
 		for(int i=0; i<data.length; i++){
 			
 			diff = data[i] - expected[i];
-			out+= diff*diff;
+			out += diff*diff;
 		}
 		return out/data.length;
 	}
 
-	public void setData(float[] d){
+	public void setExpected(float[] d){
+		while(expectedBuffer.size() >= dataBufferLen){
+			expectedBuffer.remove(expectedBuffer.size()-1);
+		}
+		float[] data = new float[d.length];
 		for(int i=0; i<data.length; i++){
 			data[i] = d[i];
 		}
+		expectedBuffer.add(0, data);
 	}
 	
-	public void setExpected(float[] d){
-		for(int i=0; i<expected.length; i++){
-			expected[i] = d[i];
+	
+	public void setData(float[] d){
+		if(d.length != data.length){
+			System.err.println("unexpected length of the data");
+		}
+		for(int i=0; i<data.length; i++){
+			data[i] = d[i];
 		}
 	}
 
@@ -233,7 +259,7 @@ public class MSENode extends AbstractConfigurableHannsNode{
 	@Override
 	public void publishProsperity(){
 		std_msgs.Float32MultiArray fl = prospPublisher.newMessage();
-		float[] data = new float[]{1-mse};
+		float[] data = new float[]{mse};
 		fl.setData(data);
 		prospPublisher.publish(fl);
 	}
