@@ -49,7 +49,6 @@ public abstract class MisoGate extends MisoAbstractGate<std_msgs.Float32MultiArr
 				b = toBoolean(message.getData()[1]);
 				y = compute(a,b);
 				send();
-				System.out.println("received data on AAAA; responding to: ("+a+","+b+")="+y);
 			}
 		});
 

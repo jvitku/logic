@@ -9,7 +9,7 @@ public class OR extends MisoGate{
 	public boolean compute(boolean a, boolean b) { 
 		
 		System.out.println("OR: computing "+a+" and "+b);
-		return (a | b); }
+		return (a || b); }
 	
 	@Override
 	public GraphName getDefaultNodeName() { return GraphName.of("OR"); }
