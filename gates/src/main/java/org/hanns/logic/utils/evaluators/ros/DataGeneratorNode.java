@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import org.ros.message.MessageListener;
 import org.ros.namespace.GraphName;
 import org.ros.node.ConnectedNode;
+import org.ros.node.topic.Publisher;
 import org.ros.node.topic.Subscriber;
 
 import ctu.nengoros.network.node.AbstractConfigurableHannsNode;
@@ -12,6 +13,7 @@ import ctu.nengoros.network.node.infrastructure.rosparam.impl.PrivateRosparam;
 import ctu.nengoros.network.node.infrastructure.rosparam.manager.ParamList;
 import ctu.nengoros.network.node.observer.Observer;
 import ctu.nengoros.network.node.observer.stats.ProsperityObserver;
+import ctu.nengoros.util.SL;
 
 /**
  * Generates given sequence of integer values. 
@@ -25,18 +27,29 @@ public class DataGeneratorNode extends AbstractConfigurableHannsNode{
 
 	public static final String name = "DataGenerator";
 
-	protected int[][] dataSeries;
+	// dataPub publishes input data, dataPubSolution then publishes expected result of the operation
+	// (e.g. XOR(a,b)) 
+	protected Publisher<std_msgs.Float32MultiArray> dataPubSolution;
+	public static final String topicDataSolution = "topicDataSolution";
+
+	protected int[][] dataSeries;			// sequence of input data
+	protected int[][] dataSeriesSol;	// sequence of solution (supervised) data
 
 	protected int step = 0;
 
 	protected ProsperityObserver o;						// not used 
 
 	public static final int DEF_NOOUTPUTS = 2;
-	public int noOutputs;
+	public static final int DEF_NOOUTPUTSSOL = 1;
+	public static final String noOutputsSolConf = "noOutputsSol";
+	public int noOutputs, noOutputsSol;
 
 	// value table for two variables
 	public static final String dataConf = "data";
 	public static final int[] DEF_VEC = new int[]{0,0,0,1,1,0,1,1};
+
+	public static final String dataConfSol = "dataSol";
+	public static final int[] DEF_VECSOL = new int[]{0,1,1,0};	// XOR operation
 
 	@Override
 	public GraphName getDefaultNodeName() { return GraphName.of(name); }
@@ -79,8 +92,11 @@ public class DataGeneratorNode extends AbstractConfigurableHannsNode{
 	@Override
 	protected void registerParameters(){
 		paramList = new ParamList();
-		paramList.addParam(noOutputsConf, ""+DEF_NOOUTPUTS,"Dimension of output data");
+		paramList.addParam(noOutputsConf, ""+DEF_NOOUTPUTS,"Dimension of output data (input to other nodes)");
+		paramList.addParam(noOutputsSolConf, ""+DEF_NOOUTPUTSSOL,"Dimension of solution data (expected solution)");
+
 		paramList.addParam(dataConf, ""+DEF_VEC, "List of integer data that will be published (x1,y1,x2,y2..)");
+		paramList.addParam(dataConfSol, ""+DEF_VECSOL, "List of integer data that is expected as solution (a1,b1,a2,b2..)");
 
 		paramList.addParam(logToFileConf, ""+DEF_LTF, "Enables logging into file");
 		paramList.addParam(logPeriodConf, ""+DEF_LOGPERIOD, "How often to log?");
@@ -105,13 +121,27 @@ public class DataGeneratorNode extends AbstractConfigurableHannsNode{
 			System.err.println("WARNING: given vector of values is not dividible by given no of outputs: "+noOutputs);
 		}
 
-		this.initDataSeries(data);
+		noOutputsSol = r.getMyInteger(noOutputsSolConf, DEF_NOOUTPUTSSOL);
+		int[] dataSol = r.getMyIntegerList(dataConfSol, DEF_VECSOL);
+
+		this.initDataSeries(data, dataSol);
 
 		System.out.println(me+"Creating data structures.");
 	}
 
-	private void initDataSeries(int[] parsedData){
+	private void initDataSeries(int[] parsedData, int[] parsedDataSol){
 		int len = parsedData.length/noOutputs;
+		int lenSol = parsedDataSol.length/noOutputsSol;
+
+		if(len != lenSol){
+			System.err.println("WARNING: the lengths of data series do not match! "
+					+len+"!="+lenSol+" Will take into account the shorter one");
+			// lenSol will not be used from now on
+			if(len > lenSol){
+				len = lenSol;
+			}
+		}
+
 		dataSeries = new int[noOutputs][len];
 		int pos = 0;
 
@@ -120,6 +150,14 @@ public class DataGeneratorNode extends AbstractConfigurableHannsNode{
 				dataSeries[i][j] = parsedData[pos++];
 			}
 		}
+		dataSeriesSol = new int[noOutputsSol][len];
+		pos = 0;
+
+		for(int i=0; i<noOutputsSol; i++){
+			for(int j=0; j<len; j++){
+				dataSeriesSol[i][j] = parsedDataSol[pos++];
+			}
+		}		
 	}
 
 	/**
@@ -129,6 +167,7 @@ public class DataGeneratorNode extends AbstractConfigurableHannsNode{
 	 */
 	protected void buildDataIO(ConnectedNode connectedNode){
 		dataPublisher =connectedNode.newPublisher(topicDataOut, std_msgs.Float32MultiArray._TYPE);
+		dataPubSolution =connectedNode.newPublisher(topicDataSolution, std_msgs.Float32MultiArray._TYPE);
 
 		Subscriber<std_msgs.Float32MultiArray> dataSub = 
 				connectedNode.newSubscriber(topicDataIn, std_msgs.Float32MultiArray._TYPE);
@@ -136,17 +175,10 @@ public class DataGeneratorNode extends AbstractConfigurableHannsNode{
 		dataSub.addMessageListener(new MessageListener<std_msgs.Float32MultiArray>() {
 			@Override
 			public void onNewMessage(std_msgs.Float32MultiArray message) {
-				float[] data = message.getData();
+				if(step % logPeriod==0  && step >0)
+					System.out.println(me+"<-"+topicDataIn+" Received new data, publishing new set of values");
 
-				if(data.length != noOutputs)
-					log.error(me+":"+topicDataIn+": Received state description has" +
-							"unexpected length of"+data.length+"! Expected: "+ noOutputs);
-				else{
-					if(step % logPeriod==0  && step >0)
-						System.out.println(me+"<-"+topicDataIn+" Received new data, publishing new step");
-
-					onNewDataReceived();
-				}
+				onNewDataReceived();
 			}
 		});
 	}
@@ -154,13 +186,25 @@ public class DataGeneratorNode extends AbstractConfigurableHannsNode{
 	public void onNewDataReceived(){
 		step++;
 		std_msgs.Float32MultiArray message = dataPublisher.newMessage();
-		
+		std_msgs.Float32MultiArray messageSolution = dataPubSolution.newMessage();
+
 		float[] data = new float[noOutputs];
 		for(int i=0; i<data.length; i++){
 			data[i] =dataSeries[i][step % dataSeries[0].length]; 
 		}
-		message.setData(data);
+
+		float[] sol = new float[noOutputsSol];
+		for(int i=0; i<sol.length; i++){
+			sol[i] =this.dataSeriesSol[i][step % dataSeriesSol[0].length]; 
+		}
+
+		message.setData(data);				// publish inputs
 		dataPublisher.publish(message);
+
+		messageSolution.setData(sol);		// publish expected solution
+		dataPubSolution.publish(messageSolution);
+		
+		System.out.println("---------- publishing this: "+SL.toStr(data)+" and: "+SL.toStr(sol));
 	}
 
 
