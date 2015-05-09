@@ -8,20 +8,20 @@ import org.ros.node.ConnectedNode;
 import org.ros.node.topic.Publisher;
 import org.ros.node.topic.Subscriber;
 
-import std_msgs.Bool;
+import ctu.nengoros.util.SL;
 
 /**
  * @author Jaroslav Vitku vitkujar@fel.cvut.cz
  * 
  */
-public abstract class SisoGate extends SisoAbstractGate<std_msgs.Bool> {
+public abstract class SisoGate extends SisoAbstractGate<std_msgs.Float32MultiArray> {
 
 	private final boolean SEND = false; 		// send periodically each "time step"?
 	private final int sleepTime = 10000;		// everything handled by listeners
 
 	// ROS stuff
-	Subscriber<std_msgs.Bool> subscriberA;
-	Publisher<std_msgs.Bool> publisher;
+	Subscriber<std_msgs.Float32MultiArray> subscriberA;
+	Publisher<std_msgs.Float32MultiArray> publisher;
 	Log log;
 	
 	public final String aT = "logic/gates/ina";
@@ -39,10 +39,10 @@ public abstract class SisoGate extends SisoAbstractGate<std_msgs.Bool> {
 	protected void send(){
 		super.awaitCommunicationReady();
 
-		std_msgs.Bool out = publisher.newMessage();
-		out.setData(y);
+		std_msgs.Float32MultiArray out = publisher.newMessage();
+		out.setData(new float[]{toFl(y)});
 		publisher.publish(out);
-		log.info("Received data, publishing this: \"" + out.getData() + " !! on topic: "+yT);
+		log.info("Received data, publishing this: \"" + SL.toStr(out.getData()) + " !! on topic: "+yT);
 	}
 	
 	public int getSleepTime(){ return this.sleepTime; }
@@ -52,12 +52,12 @@ public abstract class SisoGate extends SisoAbstractGate<std_msgs.Bool> {
 		log = connectedNode.getLog();
 		
 		// register subscribers
-		subscriberA = connectedNode.newSubscriber(aT, std_msgs.Bool._TYPE);
+		subscriberA = connectedNode.newSubscriber(aT, std_msgs.Float32MultiArray._TYPE);
 
-		subscriberA.addMessageListener(new MessageListener<std_msgs.Bool>() {
+		subscriberA.addMessageListener(new MessageListener<std_msgs.Float32MultiArray>() {
 			@Override
-			public void onNewMessage(Bool message) {
-				a = message.getData();
+			public void onNewMessage(std_msgs.Float32MultiArray message) {
+				a = toB(message.getData());
 				y = compute(a);
 				send();
 			}
@@ -77,10 +77,10 @@ public abstract class SisoGate extends SisoAbstractGate<std_msgs.Bool> {
 			protected void loop() throws InterruptedException {
 
 				if(SEND){
-					std_msgs.Bool out = publisher.newMessage();
-					out.setData(y);
+					std_msgs.Float32MultiArray out = publisher.newMessage();
+					out.setData(new float[]{toFl(y)});
 					publisher.publish(out);
-					log.info("Publishing this: \"" + out.getData() + " !! on topic: "+yT);
+					log.info("Publishing this: \"" + SL.toStr(out.getData()) + " !! on topic: "+yT);
 				}
 				Thread.sleep(sleepTime);
 			}

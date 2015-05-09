@@ -95,8 +95,8 @@ public class DataGeneratorNode extends AbstractConfigurableHannsNode{
 		paramList.addParam(noOutputsConf, ""+DEF_NOOUTPUTS,"Dimension of output data (input to other nodes)");
 		paramList.addParam(noOutputsSolConf, ""+DEF_NOOUTPUTSSOL,"Dimension of solution data (expected solution)");
 
-		paramList.addParam(dataConf, ""+DEF_VEC, "List of integer data that will be published (x1,y1,x2,y2..)");
-		paramList.addParam(dataConfSol, ""+DEF_VECSOL, "List of integer data that is expected as solution (a1,b1,a2,b2..)");
+		paramList.addParam(dataConf, ""+SL.toStr(DEF_VEC), "List of integer data that will be published (x1,y1,x2,y2..)");
+		paramList.addParam(dataConfSol, ""+SL.toStr(DEF_VECSOL), "List of integer data that is expected as solution (a1,b1,a2,b2..)");
 
 		paramList.addParam(logToFileConf, ""+DEF_LTF, "Enables logging into file");
 		paramList.addParam(logPeriodConf, ""+DEF_LOGPERIOD, "How often to log?");

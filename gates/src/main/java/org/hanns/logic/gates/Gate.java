@@ -30,4 +30,13 @@ public abstract class Gate<T> extends CommunicationAwareNode {
 	
 	protected abstract void send();
 
+	public static float toFl(boolean b){ 
+		if(b){
+			return 1.0f;
+		}else{
+			return 0.0f;			
+		}
+	}
+	
+	public static boolean toB(float[] data){ return data[0] >= 0.5; }
 }
