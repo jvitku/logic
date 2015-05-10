@@ -259,7 +259,13 @@ public class MSENode extends AbstractConfigurableHannsNode{
 	@Override
 	public void publishProsperity(){
 		std_msgs.Float32MultiArray fl = prospPublisher.newMessage();
-		float[] data = new float[]{mse};
+		float prosp;
+		if(mse==0){
+			prosp = 1;
+		}else{
+			prosp = 1/mse;	// the higher the MSE, the lower the prosperity
+		}
+		float[] data = new float[]{prosp};
 		fl.setData(data);
 		prospPublisher.publish(fl);
 	}
