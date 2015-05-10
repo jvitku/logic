@@ -26,6 +26,9 @@ import ctu.nengoros.util.SL;
  */
 public class MSENode extends AbstractConfigurableHannsNode{
 
+
+	public static final int DEF_ZERO_ERROR = 1000;
+	
 	public static final String name = "MSENode";
 
 	public static final String topicDataInSupervised = "topicDataInSupervised";
@@ -251,7 +254,6 @@ public class MSENode extends AbstractConfigurableHannsNode{
 	protected void buildConfigSubscribers(ConnectedNode connectedNode){
 	}
 
-	public static final int DEF_BEST_F = 1000;
 	
 	/**
 	 * If the prosperity observer has no childs, publish its value. 
@@ -263,7 +265,7 @@ public class MSENode extends AbstractConfigurableHannsNode{
 		std_msgs.Float32MultiArray fl = prospPublisher.newMessage();
 		float prosp;
 		if(mse==0){
-			prosp = DEF_BEST_F;
+			prosp = DEF_ZERO_ERROR;
 		}else{
 			prosp = 1/mse;	// the higher the MSE, the lower the prosperity
 		}
