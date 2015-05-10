@@ -27,7 +27,7 @@ import ctu.nengoros.util.SL;
 public class MSENode extends AbstractConfigurableHannsNode{
 
 
-	public static final int DEF_ZERO_ERROR = 1000;
+	public static final int DEF_ZERO_ERROR = 1000000;
 	
 	public static final String name = "MSENode";
 
