@@ -40,7 +40,7 @@ public class MSENode extends AbstractConfigurableHannsNode{
 	protected int delay;
 	protected int dataSize;
 	protected int step = 0;
-	protected float mse = 0;
+	protected float totalError = 0;
 	protected float[] data; //expected;//data, 
 
 	protected ArrayList<float[]> expectedBuffer;
@@ -125,7 +125,7 @@ public class MSENode extends AbstractConfigurableHannsNode{
 		//data = new float[dataSize];
 		data = new float[dataSize];
 		expectedBuffer = new ArrayList<float[]>(dataBufferLen);
-		mse = 0;
+		totalError = 0;
 	}
 
 
@@ -202,7 +202,7 @@ public class MSENode extends AbstractConfigurableHannsNode{
 		step++;
 		
 		if(expectedBuffer.size() >= delay+1){
-			mse += this.computeDifferences(expectedBuffer.get(delay), data);	
+			totalError += this.computeDifferences(expectedBuffer.get(delay), data);	
 		}
 		
 		this.publishProsperity();
@@ -264,9 +264,10 @@ public class MSENode extends AbstractConfigurableHannsNode{
 	public void publishProsperity(){
 		std_msgs.Float32MultiArray fl = prospPublisher.newMessage();
 		float prosp;
-		if(mse==0){
+		if(totalError==0){
 			prosp = DEF_ZERO_ERROR;
 		}else{
+			float mse = totalError/step;
 			prosp = 1/mse;	// the higher the MSE, the lower the prosperity
 		}
 		float[] data = new float[]{prosp};
@@ -310,7 +311,7 @@ public class MSENode extends AbstractConfigurableHannsNode{
 	@Override
 	public void hardReset(boolean arg0) {
 		this.clearReceived();
-		this.mse = 0;
+		this.totalError = 0;
 		this.step = 0;
 		expectedBuffer.clear();
 	}
@@ -318,14 +319,14 @@ public class MSENode extends AbstractConfigurableHannsNode{
 	@Override
 	public void softReset(boolean arg0) {
 		this.clearReceived();
-		this.mse = 0;
+		this.totalError = 0;
 		this.step = 0;
 		expectedBuffer.clear();
 	}
 
 	@Override
 	public float getProsperity() {
-		return 1-mse;
+		return 1-totalError;
 	}
 }
 
