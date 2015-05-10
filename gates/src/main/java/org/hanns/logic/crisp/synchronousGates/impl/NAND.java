@@ -9,8 +9,7 @@ public class NAND extends MisoGate{
 	
 	@Override
 	public boolean compute(boolean a, boolean b) { 
-		
-		System.out.println(step+++" NAND: computing "+a+" and "+b+" = "+(!(a && b)));
+		//System.out.println(step+++" NAND: computing "+a+" and "+b+" = "+(!(a && b)));
 		return !(a && b); }
 	
 	@Override

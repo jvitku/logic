@@ -143,7 +143,7 @@ public class MSENode extends AbstractConfigurableHannsNode{
 				float[] data = message.getData();
 				//System.err.println("RECEIVED data of value.. "+SL.toStr(data));
 
-				System.err.println("MSE -  - --- received this array on A "+SL.toStr(data));
+				//System.err.println("MSE -  - --- received this array on A "+SL.toStr(data));
 				
 				if(data.length != dataSize)
 					log.error(me+":"+topicDataIn+": Received state description has" +
@@ -173,7 +173,7 @@ public class MSENode extends AbstractConfigurableHannsNode{
 				float[] data = message.getData();
 				//System.err.println("RECEIVED data of value.. "+SL.toStr(data));
 
-				System.err.println("MSE -  - --- received this array on B "+SL.toStr(data));
+				//System.err.println("MSE -  - --- received this array on B "+SL.toStr(data));
 				
 				if(data.length != dataSize)
 					log.error(me+":"+topicDataIn+": Received state description has" +
@@ -251,6 +251,8 @@ public class MSENode extends AbstractConfigurableHannsNode{
 	protected void buildConfigSubscribers(ConnectedNode connectedNode){
 	}
 
+	public static final int DEF_BEST_F = 1000;
+	
 	/**
 	 * If the prosperity observer has no childs, publish its value. 
 	 * If the prosperity observer has childs, publish its value on the first
@@ -261,7 +263,7 @@ public class MSENode extends AbstractConfigurableHannsNode{
 		std_msgs.Float32MultiArray fl = prospPublisher.newMessage();
 		float prosp;
 		if(mse==0){
-			prosp = 1;
+			prosp = DEF_BEST_F;
 		}else{
 			prosp = 1/mse;	// the higher the MSE, the lower the prosperity
 		}
@@ -306,11 +308,17 @@ public class MSENode extends AbstractConfigurableHannsNode{
 	@Override
 	public void hardReset(boolean arg0) {
 		this.clearReceived();
+		this.mse = 0;
+		this.step = 0;
+		expectedBuffer.clear();
 	}
 
 	@Override
 	public void softReset(boolean arg0) {
 		this.clearReceived();
+		this.mse = 0;
+		this.step = 0;
+		expectedBuffer.clear();
 	}
 
 	@Override

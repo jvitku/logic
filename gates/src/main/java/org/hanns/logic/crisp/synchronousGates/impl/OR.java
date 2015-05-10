@@ -10,8 +10,7 @@ public class OR extends MisoGate{
 	
 	@Override
 	public boolean compute(boolean a, boolean b) { 
-		
-		System.out.println(step+++" OR: computing "+a+" and "+b+" = "+(a||b));
+		//System.out.println(step+++" OR: computing "+a+" and "+b+" = "+(a||b));
 		return (a || b); }
 	
 	@Override

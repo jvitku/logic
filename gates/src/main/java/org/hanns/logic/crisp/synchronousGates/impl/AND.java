@@ -9,8 +9,7 @@ public class AND extends MisoGate{
 	
 	@Override
 	public boolean compute(boolean a, boolean b) { 
-
-		System.out.println(step+++" AND: computing "+a+" and "+b+" = "+(a && b));
+		//System.out.println(step+++" AND: computing "+a+" and "+b+" = "+(a && b));
 		return (a &&  b);
 	}
 
